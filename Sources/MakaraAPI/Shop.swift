@@ -14,6 +14,7 @@ public class Shop: Codable {
     let name: String?
     let location: Location?
     let address: Address?
+    let coverImage: Media?
     
     internal init (
         publicId: String,
@@ -51,7 +52,7 @@ public class Shop: Codable {
             location: nil,
             address: nil,
             coverImage: Media(
-                publicId: 'demo_proDive_image',
+                publicId: "demo_proDive_image",
                 mediaType: .image,
                 mediaQuality: .managed,
                 mediaCodec: .jpeg,
