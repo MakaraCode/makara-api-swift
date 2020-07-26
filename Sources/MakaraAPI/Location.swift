@@ -8,24 +8,14 @@
 import Foundation
 
 
-public final class Location: Journaled, Decodable {
-
-    let journalEntry: JournalEntry
-    let name: String
+public struct Location: Codable {
+    
     let coordinates: Coordinates
-
-    public required init(from decoder: Decoder) throws {
-        let data = try decoder.container(keyedBy: Keys.self)
-        coordinates = try data.decode(Coordinates.self, forKey: .coordinates)
-        name = try data.decode(String.self, forKey: .name)
-        journalEntry = try data.decode(JournalEntry.self, forKey: .journalEntry)
-        return
-    }
-
-    private enum Keys: String, CodingKey {
-        case journalEntry = "journal_entry"
-        case name = "name"
+    let earth3d: Earth3D
+    
+    enum CodingKeys: String, CodingKey {
         case coordinates = "coordinates"
+        case earth3d = "earth_3d"
     }
-
+    
 }
