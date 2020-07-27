@@ -44,6 +44,30 @@ public class Shop: Codable {
         return
     }
     
+    public static func retrieveMany(
+        nameFragment: String?,
+        referenceLocation: Coordinates,
+        order: Order,
+        orderBy: Shop.OrderBy,
+        offset: Int,
+        limit: Int,
+        then callback: @escaping (_: Error?, _: Array<Shop>?) -> Void
+    ) {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: {
+            callback(nil, [Self.generateDemoShop()])
+        })
+        
+        return
+        
+    }
+    
+    public enum OrderBy: String {
+        case name = "name"
+        case created = "created"
+        case distanceFromReference = "distance_from_reference"
+    }
+    
     private static func generateDemoShop() -> Shop {
         
         return Shop(
@@ -69,5 +93,5 @@ public class Shop: Codable {
         )
         
     }
-    
+
 }
