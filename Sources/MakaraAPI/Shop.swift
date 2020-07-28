@@ -8,20 +8,28 @@
 import Foundation
 
 
-public class Shop: Codable {
+public struct Shop: Codable {
     
     let publicId: String
     let name: String?
     let location: Location?
     let address: Address?
     let coverImage: Media?
+    let referenceFrame: SpatialReferenceFrame?
+    let order: Order
+    let orderBy: Shop.OrderBy
+    let disposition: Disposition
     
     internal init (
         publicId: String,
         name: String?,
         location: Location?,
         address: Address?,
-        coverImage: Media?
+        coverImage: Media?,
+        referenceFrame: SpatialReferenceFrame?,
+        order: Order,
+        orderBy: Shop.OrderBy,
+        disposition: Disposition
     ) {
         
         self.publicId = publicId
@@ -29,6 +37,12 @@ public class Shop: Codable {
         self.location = location
         self.address = address
         self.coverImage = coverImage
+        self.referenceFrame = referenceFrame
+        self.order = order
+        self.orderBy = orderBy
+        self.disposition = disposition
+        
+        return
 
     }
     
@@ -62,10 +76,21 @@ public class Shop: Codable {
         
     }
     
-    public enum OrderBy: String {
+    public enum OrderBy: String, Codable {
         case name = "name"
         case created = "created"
-        case distanceFromReference = "distance_from_reference"
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case publicId = "public_id"
+        case name = "name"
+        case location = "location"
+        case address = "address"
+        case coverImage = "cover_image"
+        case referenceFrame = "reference_frame"
+        case order = "order"
+        case orderBy = "order_by"
+        case disposition = "disposition"
     }
     
     private static func generateDemoShop() -> Shop {
@@ -89,9 +114,16 @@ public class Shop: Codable {
                 name: nil,
                 description: nil,
                 tags: [Tag(body: "island", count: 4)]
+            ),
+            referenceFrame: nil,
+            order: .descending,
+            orderBy: .name,
+            disposition: Disposition(
+                sequence: 1,
+                count: 1,
+                limit: 20,
+                offset: 0
             )
         )
-        
     }
-
 }

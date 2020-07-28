@@ -8,7 +8,7 @@
 import Foundation
 
 
-public enum Order: String {
+public enum Order: String, Codable {
     case ascending = "ascending"
     case descending = "descending"
 }
