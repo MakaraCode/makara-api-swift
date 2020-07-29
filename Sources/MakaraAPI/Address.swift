@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Address: Codable {
+public struct Address: Codable {
 
     let publicId: String
     let postCode: String

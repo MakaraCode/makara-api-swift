@@ -59,12 +59,12 @@ public struct Shop: Codable {
     }
     
     public static func retrieveMany(
-        nameFragment: String?,
-        referenceLocation: Coordinates,
-        order: Order,
-        orderBy: Shop.OrderBy,
-        offset: Int,
-        limit: Int,
+        nameFragment: String? = nil,
+        referenceLocation: Coordinates? = nil,
+        order: Order = .ascending,
+        orderBy: Shop.OrderBy = .name,
+        offset: Int = 0,
+        limit: Int = 20,
         then callback: @escaping (_: Error?, _: Array<Shop>?) -> Void
     ) {
         
@@ -76,9 +76,21 @@ public struct Shop: Codable {
         
     }
     
+    public static func create(
+        name: String,
+        location: Location? = nil,
+        address: Address? = nil,
+        then callback: @escaping (_: Error?, _: Shop?) -> Void
+    ) {
+        
+        fatalError("Not implemented")
+        
+    }
+    
     public enum OrderBy: String, Codable {
         case name = "name"
         case created = "created"
+        case metresFromReference = "metres_from_reference"
     }
     
     enum CodingKeys: String, CodingKey {
