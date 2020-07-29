@@ -10,22 +10,22 @@ import Foundation
 
 public struct Shop: Codable {
     
-    let publicId: String
-    let name: String?
-    let location: Location?
-    let address: Address?
-    let coverImage: Media?
-    let referenceFrame: SpatialReferenceFrame?
-    let order: Order
-    let orderBy: Shop.OrderBy
-    let disposition: Disposition
+    public let publicId: String
+    public let name: String?
+    public let location: Location?
+    public let address: Address?
+    public let coverImage: Image?
+    public let referenceFrame: SpatialReferenceFrame?
+    public let order: Order
+    public let orderBy: Shop.OrderBy
+    public let disposition: Disposition
     
     internal init (
         publicId: String,
         name: String?,
         location: Location?,
         address: Address?,
-        coverImage: Media?,
+        coverImage: Image?,
         referenceFrame: SpatialReferenceFrame?,
         order: Order,
         orderBy: Shop.OrderBy,
@@ -112,9 +112,8 @@ public struct Shop: Codable {
             name: "Pro Dive Lord Howe Island",
             location: nil,
             address: nil,
-            coverImage: Media(
+            coverImage: Image(
                 publicId: "demo_proDive_image",
-                mediaType: .image,
                 mediaQuality: .managed,
                 mediaCodec: .jpeg,
                 url: "https://blinkybeach.com/img/proDiveDemo.jpeg",

@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct SpatialReferenceFrame: Codable {
+public struct SpatialReferenceFrame: Codable {
     
     let location: Location
     let distanceMetres: Int

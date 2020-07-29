@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum MediaDimensionType: String, Codable {
+public enum MediaDimensionType: String, Codable {
     
     case xPixels = "x_pixels"
     case yPixels = "y_pixels"

@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Tag: Codable {
+public struct Tag: Codable {
     
     let body: String
     let count: Int

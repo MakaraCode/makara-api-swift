@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum MediaQuality: String, Codable {
+public enum MediaQuality: String, Codable {
     
     case free = "free"
     case managed = "managed"

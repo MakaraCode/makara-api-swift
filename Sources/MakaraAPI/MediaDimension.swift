@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct MediaDimension: Codable {
+public struct MediaDimension: Codable {
     
     let dimensionType: MediaDimensionType
     let value: Int

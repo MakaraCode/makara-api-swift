@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum MediaCodec: String, Codable {
+public enum MediaCodec: String, Codable {
     
     case jpeg = "jpeg"
     case h264 = "h264"
