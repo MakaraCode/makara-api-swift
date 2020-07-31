@@ -16,7 +16,6 @@ public struct Shop: Codable {
     public let address: Address?
     public let coverImage: Image?
     public let referenceFrame: SpatialReferenceFrame?
-    public let order: Order
     public let orderBy: Shop.OrderBy
     public let disposition: Disposition
     
@@ -27,7 +26,6 @@ public struct Shop: Codable {
         address: Address?,
         coverImage: Image?,
         referenceFrame: SpatialReferenceFrame?,
-        order: Order,
         orderBy: Shop.OrderBy,
         disposition: Disposition
     ) {
@@ -38,7 +36,6 @@ public struct Shop: Codable {
         self.address = address
         self.coverImage = coverImage
         self.referenceFrame = referenceFrame
-        self.order = order
         self.orderBy = orderBy
         self.disposition = disposition
         
@@ -100,7 +97,6 @@ public struct Shop: Codable {
         case address = "address"
         case coverImage = "cover_image"
         case referenceFrame = "reference_frame"
-        case order = "order"
         case orderBy = "order_by"
         case disposition = "disposition"
     }
@@ -127,13 +123,13 @@ public struct Shop: Codable {
                 tags: [Tag(body: "island", count: 4)]
             ),
             referenceFrame: nil,
-            order: .descending,
             orderBy: .name,
             disposition: Disposition(
                 sequence: 1,
                 count: 1,
                 limit: 20,
-                offset: 0
+                offset: 0,
+                order: .ascending
             )
         )
     }
