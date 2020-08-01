@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Defunct... https://useyourloaf.com/blog/swift-codable-with-custom-dates/
+// Replace with a date decoder extension
 
 class MakaraDate {
 
