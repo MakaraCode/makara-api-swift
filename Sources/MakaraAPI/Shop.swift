@@ -10,6 +10,8 @@ import Foundation
 
 public struct Shop: Codable {
     
+    static var demoShop: Shop { return Self.generateDemoShop(); }
+    
     public let publicId: String
     public let name: String?
     public let location: Location?
@@ -18,30 +20,6 @@ public struct Shop: Codable {
     public let referenceFrame: SpatialReferenceFrame?
     public let orderBy: Shop.OrderBy
     public let disposition: Disposition
-    
-    internal init (
-        publicId: String,
-        name: String?,
-        location: Location?,
-        address: Address?,
-        coverImage: Image?,
-        referenceFrame: SpatialReferenceFrame?,
-        orderBy: Shop.OrderBy,
-        disposition: Disposition
-    ) {
-        
-        self.publicId = publicId
-        self.name = name
-        self.location = location
-        self.address = address
-        self.coverImage = coverImage
-        self.referenceFrame = referenceFrame
-        self.orderBy = orderBy
-        self.disposition = disposition
-        
-        return
-
-    }
     
     public static func retrieve(
         withPublicId publicId: String,
@@ -79,9 +57,7 @@ public struct Shop: Codable {
         address: Address? = nil,
         then callback: @escaping (_: Error?, _: Shop?) -> Void
     ) {
-        
         fatalError("Not implemented")
-        
     }
     
     public enum OrderBy: String, Codable {
@@ -133,4 +109,5 @@ public struct Shop: Codable {
             )
         )
     }
+
 }
