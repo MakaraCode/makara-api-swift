@@ -10,7 +10,7 @@ import Foundation
 
 public struct Shop: Codable {
     
-    static var demoShop: Shop { return Self.generateDemoShop(); }
+    public static var demoShop: Shop { return Self.generateDemoShop(); }
     
     public let publicId: String
     public let name: String?
