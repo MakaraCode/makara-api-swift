@@ -13,7 +13,7 @@ public struct Shop: Codable {
     public static var demoShop: Shop { return Self.generateDemoShop(); }
     
     public let publicId: String
-    public let name: String?
+    public let name: String
     public let location: Location?
     public let address: Address?
     public let coverImage: Image?
