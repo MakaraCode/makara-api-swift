@@ -8,12 +8,12 @@
 import Foundation
 
 
-struct Region: Codable {
+public struct Region: Codable {
 
-    let name: String
-    let abbreviation: String
-    let country: Country
-    let indexid: String
+    public let name: String
+    public let abbreviation: String
+    public let country: Country
+    public let indexid: String
     
     enum CodingKeys: String, CodingKey {
         case name = "name"

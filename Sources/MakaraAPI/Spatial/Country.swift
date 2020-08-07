@@ -8,11 +8,11 @@
 import Foundation
 
 
-struct Country: Codable {
+public struct Country: Codable {
     
-    let name: String
-    let iso3166a3: String
-    let iso3166a2: String
+    public let name: String
+    public let iso3166a3: String
+    public let iso3166a2: String
     
     enum CodingKeys: String, CodingKey {
         case name = "name"
