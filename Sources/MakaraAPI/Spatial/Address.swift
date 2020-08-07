@@ -10,10 +10,10 @@ import Foundation
 
 public struct Address: Codable {
 
-    let publicId: String
-    let postCode: String
-    let lines: Array<AddressLine>
-    let region: Region
+    public let publicId: String
+    public let postCode: String
+    public let lines: Array<AddressLine>
+    public let region: Region
     
     enum CodingKeys: String, CodingKey {
         case publicId = "public_id"
