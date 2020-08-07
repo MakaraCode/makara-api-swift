@@ -8,8 +8,8 @@
 import Foundation
 
 
-struct AddressLine: Codable {
+public struct AddressLine: Codable {
     
-    let body: String
+    public let body: String
 
 }
