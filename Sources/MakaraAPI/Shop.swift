@@ -8,8 +8,8 @@
 import Foundation
 
 
-public struct Shop: Codable, Hashable {
-    
+public struct Shop: Codable, Hashable, Identifiable {
+
     public static var demoShop: Shop { return Self.generateDemoShop(); }
     
     public let publicId: String
@@ -20,6 +20,8 @@ public struct Shop: Codable, Hashable {
     public let referenceFrame: SpatialReferenceFrame?
     public let orderBy: Shop.OrderBy
     public let disposition: Disposition
+    
+    public var id: String { get { return publicId } }
     
     public static func retrieve(
         withPublicId publicId: String,
