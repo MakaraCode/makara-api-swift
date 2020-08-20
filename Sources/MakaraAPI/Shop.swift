@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct Shop: Codable {
+public struct Shop: Codable, Hashable {
     
     public static var demoShop: Shop { return Self.generateDemoShop(); }
     
@@ -75,6 +75,15 @@ public struct Shop: Codable {
         case referenceFrame = "reference_frame"
         case orderBy = "order_by"
         case disposition = "disposition"
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(publicId)
+    }
+    
+    public static func == (lhs: Shop, rhs: Shop) -> Bool {
+        if (lhs.publicId == rhs.publicId) { return true }
+        return false
     }
     
     private static func generateDemoShop() -> Shop {
