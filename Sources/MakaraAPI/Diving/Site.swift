@@ -8,20 +8,31 @@
 import Foundation
 
 
-struct DiveSite: Codable {
+public struct DiveSite: Codable, Hashable, Identifiable {
     
-    let publicId: String
-    let name: String
-    let description: String?
-    let location: Location
-    let depthMetres: Int
-    let referenceFrame: SpatialReferenceFrame?
-    let tags: Array<Tag>
-    let disposition: Disposition
+    public let publicId: String
+    public let name: String
+    public let description: String?
+    public let location: Location
+    public let depthMetres: Int
+    public let referenceFrame: SpatialReferenceFrame?
+    public let tags: Array<Tag>
+    public let disposition: Disposition
     
     public enum OrderBy: String, Codable {
         case name = "name"
         case metresFromReference = "metres_from_reference"
+    }
+    
+    public var id: String { get { return publicId } }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(publicId)
+    }
+    
+    public static func == (lhs: DiveSite, rhs: DiveSite) -> Bool {
+        if (lhs.publicId == rhs.publicId) { return true }
+        return false
     }
     
     internal enum CodingKeys: String, CodingKey {
@@ -34,5 +45,39 @@ struct DiveSite: Codable {
         case tags
         case disposition
     }
+    
+    public static var demoSite1: DiveSite { get {
+        return DiveSite(
+            publicId: "demo_divesite_1",
+            name: "The Arch",
+            description: nil,
+            location: Location(
+                coordinates: Coordinates(
+                    longitude: "-31.527473",
+                    latitude: "159.066132"
+                ),
+                earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
+            ),
+            depthMetres: 5,
+            referenceFrame: SpatialReferenceFrame(
+                location: Location(
+                    coordinates: Coordinates(
+                        longitude: "-31.527866",
+                        latitude: "159.049642"
+                    ),
+                    earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
+                ),
+                distanceMetres: 7900
+            ),
+            tags: [Tag(body: "Blue", count: 4)],
+            disposition: Disposition(
+                sequence: 1,
+                count: 1,
+                limit: 1,
+                offset: 0,
+                order: .descending
+            )
+        )
+    } }
 
 }
