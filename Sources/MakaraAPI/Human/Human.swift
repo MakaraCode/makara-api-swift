@@ -9,7 +9,7 @@ import Foundation
 
 
 
-public struct Human: Decodable, Hashable, Identifiable  {
+public struct Human: Codable, Hashable, Identifiable  {
     
     public let publicId: String
     public let name: HumanName
@@ -32,7 +32,7 @@ public struct Human: Decodable, Hashable, Identifiable  {
         case birthDate = "birth_date"
     }
     
-    public var demoHuman1: Human { get {
+    public static var demoHuman1: Human { get {
         return Human(
             publicId: "demo_human_1",
             name: HumanName([
@@ -43,7 +43,7 @@ public struct Human: Decodable, Hashable, Identifiable  {
         )
     } }
     
-    public var demoHuman2: Human { get {
+    public static var demoHuman2: Human { get {
         return Human(
             publicId: "demo_human_2",
             name: HumanName([
@@ -52,6 +52,10 @@ public struct Human: Decodable, Hashable, Identifiable  {
             ]),
             birthDate: Date(timeIntervalSinceNow: 34*365*24*60*60)
         )
+    } }
+    
+    public static var demoHumans: Array<Human> { get {
+        return [Human.demoHuman1, Human.demoHuman2]
     } }
 
 }
