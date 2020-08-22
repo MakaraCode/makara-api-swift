@@ -9,22 +9,11 @@ import Foundation
 
 
 
-public struct Human: Codable, Hashable, Identifiable  {
+public struct Human: Codable, PubliclyIdentified {
     
     public let publicId: String
     public let name: HumanName
     public let birthDate: Date
-    
-    public var id: String { get { return publicId } }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(publicId)
-    }
-    
-    public static func == (lhs: Human, rhs: Human) -> Bool {
-        if (lhs.publicId == rhs.publicId) { return true }
-        return false
-    }
 
     private enum Keys: String, CodingKey {
         case publicId = "public_id"

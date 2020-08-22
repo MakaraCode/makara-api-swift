@@ -2,28 +2,54 @@
 //  File.swift
 //  
 //
-//  Created by Hugh Jeremy on 19/12/19.
+//  Created by Hugh Jeremy on 23/8/20.
 //
 
 import Foundation
 
+public enum VehicleType: String {
+    case truck = "truck"
+    case boat = "boat"
+}
 
-class Vehicle: Decodable {
+
+public struct Vehicle: PubliclyIdentified {
     
-    let passengerCapacity: Int
-    let name: String
+    public let publicId: String
+    public let type: VehicleType
+    public let maximumPassengers: Int
+    public let minimumCrew: Int
+    public let name: String
 
-    required init(from decoder: Decoder) throws {
-        let data = try decoder.container(keyedBy: Keys.self)
-        passengerCapacity = try data.decode(
-            Int.self, forKey: .passengerCapacity
+    private enum CodingKeys: String, CodingKey {
+        case publicId = "public_id"
+        case type
+        case maximumPassengers = "maximum_passengers"
+        case minimumCrew = "minimum_crew"
+        case name
+    }
+    
+    public static var demoVehicle1: Vehicle { get {
+        return Vehicle(
+            publicId: "demo_vehicle_1",
+            type: .boat,
+            maximumPassengers: 12,
+            minimumCrew: 2,
+            name: "Pinnacle"
         )
-        name = try data.decode(String.self, forKey: .name)
-        return
-    }
+    } }
+        
+    public static var demoVehicle2: Vehicle { get {
+        return Vehicle(
+            publicId: "demo_vehicle_2",
+            type: .truck,
+            maximumPassengers: 6, minimumCrew: 1,
+            name: "Ute"
+        )
+    } }
+    
+    public static var demoVehicles: Array<Vehicle> { get {
+        return [Self.demoVehicle1, Self.demoVehicle2]
+    } }
 
-    private enum Keys: String, CodingKey {
-        case passengerCapacity = "passenger_capacity"
-        case name = "name"
-    }
 }

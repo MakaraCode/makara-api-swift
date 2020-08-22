@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct DiveSite: Codable, Hashable, Identifiable {
+public struct DiveSite: Codable, PubliclyIdentified {
     
     public let publicId: String
     public let name: String
@@ -23,18 +23,7 @@ public struct DiveSite: Codable, Hashable, Identifiable {
         case name = "name"
         case metresFromReference = "metres_from_reference"
     }
-    
-    public var id: String { get { return publicId } }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(publicId)
-    }
-    
-    public static func == (lhs: DiveSite, rhs: DiveSite) -> Bool {
-        if (lhs.publicId == rhs.publicId) { return true }
-        return false
-    }
-    
+
     internal enum CodingKeys: String, CodingKey {
         case publicId = "public_id"
         case name
