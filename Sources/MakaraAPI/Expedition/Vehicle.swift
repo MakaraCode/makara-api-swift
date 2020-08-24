@@ -7,13 +7,13 @@
 
 import Foundation
 
-public enum VehicleType: String {
+public enum VehicleType: String, Codable {
     case truck = "truck"
     case boat = "boat"
 }
 
 
-public struct Vehicle: PubliclyIdentified {
+public struct Vehicle: Codable, PubliclyIdentified {
     
     public let publicId: String
     public let type: VehicleType
