@@ -35,38 +35,36 @@ public struct DiveSite: Codable, PubliclyIdentified {
         case disposition
     }
     
-    public static var demoSite1: DiveSite { get {
-        return DiveSite(
-            publicId: "demo_divesite_1",
-            name: "The Arch",
-            description: nil,
+    public static let demoSite1 = DiveSite(
+        publicId: "demo_divesite_1",
+        name: "The Arch",
+        description: nil,
+        location: Location(
+            coordinates: Coordinates(
+                longitude: "-31.527473",
+                latitude: "159.066132"
+            ),
+            earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
+        ),
+        depthMetres: 5,
+        referenceFrame: SpatialReferenceFrame(
             location: Location(
                 coordinates: Coordinates(
-                    longitude: "-31.527473",
-                    latitude: "159.066132"
+                    longitude: "-31.527866",
+                    latitude: "159.049642"
                 ),
                 earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
             ),
-            depthMetres: 5,
-            referenceFrame: SpatialReferenceFrame(
-                location: Location(
-                    coordinates: Coordinates(
-                        longitude: "-31.527866",
-                        latitude: "159.049642"
-                    ),
-                    earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
-                ),
-                distanceMetres: 7900
-            ),
-            tags: [Tag(body: "Blue", count: 4)],
-            disposition: Disposition(
-                sequence: 1,
-                count: 1,
-                limit: 1,
-                offset: 0,
-                order: .descending
-            )
+            distanceMetres: 7900
+        ),
+        tags: [Tag(body: "Blue", count: 4)],
+        disposition: Disposition(
+            sequence: 1,
+            count: 1,
+            limit: 1,
+            offset: 0,
+            order: .descending
         )
-    } }
+    )
 
 }
