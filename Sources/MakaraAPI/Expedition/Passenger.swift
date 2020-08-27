@@ -16,6 +16,7 @@ public struct Passenger: Codable, PubliclyIdentified {
     public let activities: Array<Activity>
     public let notes: Array<Note>
     public let gear: Array<Gear>
+    public let disposition: Disposition
     
     public var id: String { get { return human.publicId + diveId } }
     
