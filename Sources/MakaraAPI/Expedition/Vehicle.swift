@@ -13,8 +13,10 @@ public enum VehicleType: String, Codable {
 }
 
 
-public struct Vehicle: Codable, PubliclyIdentified {
+public struct Vehicle: Model {
     
+    public static let path = "/vehicle"
+
     public let publicId: String
     public let type: VehicleType
     public let maximumPassengers: Int

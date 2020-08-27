@@ -8,7 +8,7 @@
 import Foundation
 
 
-internal class RequestData {
+internal struct RequestData {
     
     internal static let dateStringFormat = "yyyy-MM-dd_HH:mm:ss.SSSSSS"
     
