@@ -16,6 +16,7 @@ public struct Dive: Codable, PubliclyIdentified {
     public let vehicle: Vehicle?
     public let site: DiveSite?
     public let passengers: Array<Passenger>
+    public let crew: Array<CrewMember>
     public let disposition: Disposition
     
     private enum CodingKeys: String, CodingKey {
@@ -26,6 +27,7 @@ public struct Dive: Codable, PubliclyIdentified {
         case vehicle
         case site
         case passengers
+        case crew
         case disposition
 
     }
@@ -37,6 +39,7 @@ public struct Dive: Codable, PubliclyIdentified {
         vehicle: Vehicle.demoVehicle2,
         site: DiveSite.demoSite1,
         passengers: Passenger.demoPassengers,
+        crew: [CrewMember.demoCrewMember1],
         disposition:Disposition(
             sequence: 1,
             count: 2,
@@ -53,6 +56,7 @@ public struct Dive: Codable, PubliclyIdentified {
         vehicle: Vehicle.demoVehicle1,
         site: DiveSite.demoSite1,
         passengers: Passenger.demoPassengers,
+        crew: [],
         disposition: Disposition(
             sequence: 2,
             count: 2,
