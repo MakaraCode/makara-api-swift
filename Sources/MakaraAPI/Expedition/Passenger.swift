@@ -24,27 +24,37 @@ public struct Passenger: Codable, PubliclyIdentified {
         hasher.combine(self.id)
     }
     
-    public static var demoPassenger1: Passenger { get {
-        return Passenger(
-            publicId: "demo_passenger_1",
-            human: Human.demoHuman1,
-            diveId: "demo_dive_1",
-            activities: [.dive, .snorkel],
-            notes: [Note.demoNote],
-            gear: [Gear.demoGear1]
+    public static let demoPassenger1 = Passenger(
+        publicId: "demo_passenger_1",
+        human: Human.demoHuman1,
+        diveId: "demo_dive_1",
+        activities: [.dive, .snorkel],
+        notes: [Note.demoNote],
+        gear: [Gear.demoGear1],
+        disposition: Disposition(
+            sequence: 1,
+            count: 2,
+            limit: 50,
+            offset: 0,
+            order: .ascending
         )
-    } }
-    
-    public static var demoPassenger2: Passenger { get {
-        return Passenger(
-            publicId: "demo_passenger_2",
-            human: Human.demoHuman2,
-            diveId: "demo_dive_1",
-            activities: [.dive],
-            notes: [],
-            gear: []
+    )
+
+    public static let demoPassenger2 = Passenger(
+        publicId: "demo_passenger_2",
+        human: Human.demoHuman2,
+        diveId: "demo_dive_1",
+        activities: [.dive],
+        notes: [],
+        gear: [],
+        disposition: Disposition(
+            sequence: 2,
+            count: 2,
+            limit: 50,
+            offset: 0,
+            order: .ascending
         )
-    } }
+    )
 
     public static var demoPassengers: Array<Passenger> { get {
         return [Passenger.demoPassenger1, Passenger.demoPassenger2]
