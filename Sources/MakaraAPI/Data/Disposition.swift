@@ -10,10 +10,10 @@ import Foundation
 
 public struct Disposition: Codable {
     
-    let sequence: Int
-    let count: Int
-    let limit: Int
-    let offset: Int
-    let order: Order
+    public let sequence: Int
+    public let count: Int
+    public let limit: Int
+    public let offset: Int
+    public let order: Order
     
 }
