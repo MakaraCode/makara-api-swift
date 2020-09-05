@@ -18,6 +18,7 @@ public struct Passenger: Codable, PubliclyIdentified {
     public let gear: Array<Gear>
     public let disposition: Disposition
     public let paymentOutstanding: Bool
+    public let packageId: String
     
     internal enum CodingKeys: String, CodingKey {
         case publicId = "public_id"
@@ -28,6 +29,7 @@ public struct Passenger: Codable, PubliclyIdentified {
         case gear
         case disposition
         case paymentOutstanding
+        case packageId = "package_id"
     }
     
     public var id: String { get { return human.publicId + diveId } }
@@ -48,9 +50,11 @@ public struct Passenger: Codable, PubliclyIdentified {
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending
+            order: .ascending,
+            orderBy: "name"
         ),
-        paymentOutstanding: false
+        paymentOutstanding: false,
+        packageId: "demo_package_1"
     )
 
     public static let demoPassenger2 = Passenger(
@@ -58,16 +62,20 @@ public struct Passenger: Codable, PubliclyIdentified {
         human: Human.demoHuman2,
         diveId: "demo_dive_1",
         activities: [.dive],
-        notes: [],
+        notes: [
+            
+        ],
         gear: [],
         disposition: Disposition(
             sequence: 2,
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending
+            order: .ascending,
+            orderBy: "name"
         ),
-        paymentOutstanding: false
+        paymentOutstanding: false,
+        packageId: "demo_package_2"
     )
 
     public static var demoPassengers: Array<Passenger> { get {

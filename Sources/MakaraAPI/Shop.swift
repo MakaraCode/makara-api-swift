@@ -116,7 +116,8 @@ public struct Shop: Codable, Hashable, Identifiable {
                 count: 1,
                 limit: 20,
                 offset: 0,
-                order: .ascending
+                order: .ascending,
+                orderBy: "name"
             )
         )
     }

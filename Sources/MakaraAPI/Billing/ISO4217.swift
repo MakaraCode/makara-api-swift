@@ -8,6 +8,9 @@
 import Foundation
 
 
-public struct Package {
+public enum ISO4217: String, Codable {
+    
+    case aud = "aud"
+    case usd = "usd"
 
 }

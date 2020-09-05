@@ -45,7 +45,8 @@ public struct Dive: Codable, PubliclyIdentified {
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending
+            order: .ascending,
+            orderBy: "checkin_time"
         )
     )
     
@@ -62,7 +63,8 @@ public struct Dive: Codable, PubliclyIdentified {
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending
+            order: .ascending,
+            orderBy: "checkin_time"
         )
     )
     

@@ -63,7 +63,8 @@ public struct DiveSite: Codable, PubliclyIdentified {
             count: 1,
             limit: 1,
             offset: 0,
-            order: .descending
+            order: .descending,
+            orderBy: "name"
         )
     )
 

@@ -21,6 +21,10 @@ public struct CrewMember: Codable, PubliclyIdentified {
         case dispostion
     }
     
+    public enum OrderBy: String {
+        case name
+    }
+
     public static let demoCrewMember1 = CrewMember(
         human: Human.demoHuman3,
         publicId: "demo_crewmember_1",
@@ -30,7 +34,8 @@ public struct CrewMember: Codable, PubliclyIdentified {
             count: 1,
             limit: 50,
             offset: 0,
-            order: .ascending
+            order: .ascending,
+            orderBy: CrewMember.OrderBy.name.rawValue
         )
     )
     
