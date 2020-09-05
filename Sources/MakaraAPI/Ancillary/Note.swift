@@ -22,7 +22,7 @@ public struct Note: PubliclyIdentified, Codable {
 
 extension Array where Element == Note {
     
-    var contiguousString: String { get {
+    public var contiguousString: String { get {
         return self.map { (n) -> String in
             return n.markdown
         }.joined(separator: ", ")
