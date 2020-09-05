@@ -17,6 +17,18 @@ public struct Passenger: Codable, PubliclyIdentified {
     public let notes: Array<Note>
     public let gear: Array<Gear>
     public let disposition: Disposition
+    public let paymentOutstanding: Bool
+    
+    internal enum CodingKeys: String, CodingKey {
+        case publicId = "public_id"
+        case human
+        case diveId = "dive_id"
+        case activities
+        case notes
+        case gear
+        case disposition
+        case paymentOutstanding
+    }
     
     public var id: String { get { return human.publicId + diveId } }
     
@@ -37,7 +49,8 @@ public struct Passenger: Codable, PubliclyIdentified {
             limit: 50,
             offset: 0,
             order: .ascending
-        )
+        ),
+        paymentOutstanding: false
     )
 
     public static let demoPassenger2 = Passenger(
@@ -53,7 +66,8 @@ public struct Passenger: Codable, PubliclyIdentified {
             limit: 50,
             offset: 0,
             order: .ascending
-        )
+        ),
+        paymentOutstanding: false
     )
 
     public static var demoPassengers: Array<Passenger> { get {

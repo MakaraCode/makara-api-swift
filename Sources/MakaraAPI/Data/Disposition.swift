@@ -15,5 +15,6 @@ public struct Disposition: Codable {
     public let limit: Int
     public let offset: Int
     public let order: Order
-    
+    public let orderBy: String
+
 }
