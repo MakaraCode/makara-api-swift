@@ -9,8 +9,6 @@ import Foundation
 
 
 public struct Shop: Codable, Hashable, Identifiable {
-
-    public static var demoShop: Shop { return Self.generateDemoShop(); }
     
     public let publicId: String
     public let name: String
@@ -29,7 +27,7 @@ public struct Shop: Codable, Hashable, Identifiable {
     ) {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: {
-            callback(nil, Self.generateDemoShop())
+            callback(nil, self.demoShop1)
         })
         
         return
@@ -46,7 +44,7 @@ public struct Shop: Codable, Hashable, Identifiable {
     ) {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: {
-            callback(nil, [Self.generateDemoShop()])
+            callback(nil, [Self.demoShop1])
         })
         
         return
@@ -88,38 +86,85 @@ public struct Shop: Codable, Hashable, Identifiable {
         return false
     }
     
-    private static func generateDemoShop() -> Shop {
-        
-        return Shop(
-            publicId: "demoId_proDive",
-            name: "Pro Dive Lord Howe Island",
-            location: nil,
-            address: nil,
-            coverImage: Image(
-                publicId: "demo_proDive_image",
-                mediaQuality: .managed,
-                mediaCodec: .jpeg,
-                url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
-                dimensions: [
-                    MediaDimension(dimensionType: .xPixels, value: 2560),
-                    MediaDimension(dimensionType: .yPixels, value: 1920),
-                    MediaDimension(dimensionType: .sizeKb, value: 623)
-                ],
-                name: nil,
-                description: nil,
-                tags: [Tag(body: "island", count: 4)]
-            ),
-            referenceFrame: nil,
-            orderBy: .name,
-            disposition: Disposition(
-                sequence: 1,
-                count: 1,
-                limit: 20,
-                offset: 0,
-                order: .ascending,
-                orderBy: "name"
-            )
+    public static var demoShop: Shop { return Self.demoShop1; }
+    public static let demoShops: Array<Shop> = [Self.demoShop1, Self.demoShop2]
+    
+    public static let demoShop1 = Shop(
+        publicId: "demoId_proDive",
+        name: "Pro Dive Lord Howe Island",
+        location: nil,
+        address: Address(
+            publicId: "demo_address_proDive",
+            postCode: "2898",
+            lines: [
+                AddressLine(body: "Lagoon Road"),
+                AddressLine(body: "Lord Howe Island")
+            ],
+            region: Region.AU_NSW
+        ),
+        coverImage: Image(
+            publicId: "demo_proDive_image",
+            mediaQuality: .managed,
+            mediaCodec: .jpeg,
+            url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
+            dimensions: [
+                MediaDimension(dimensionType: .xPixels, value: 2560),
+                MediaDimension(dimensionType: .yPixels, value: 1920),
+                MediaDimension(dimensionType: .sizeKb, value: 623)
+            ],
+            name: nil,
+            description: nil,
+            tags: [Tag(body: "island", count: 4)]
+        ),
+        referenceFrame: nil,
+        orderBy: .name,
+        disposition: Disposition(
+            sequence: 1,
+            count: 2,
+            limit: 20,
+            offset: 0,
+            order: .ascending,
+            orderBy: "name"
         )
-    }
+    )
+    
+    public static let demoShop2 = Shop(
+        publicId: "demoId_diveCenterBondi",
+        name: "Dive Centre Bondi",
+        location: nil,
+        address: Address(
+            publicId: "demo_address_diveCenterBondi",
+            postCode: "2026",
+            lines: [
+                AddressLine(body: "198 Bondi Rd"),
+                AddressLine(body: "Bondi")
+            ],
+            region: Region.AU_NSW
+        ),
+        coverImage: Image(
+            publicId: "demo_proDive_image",
+            mediaQuality: .managed,
+            mediaCodec: .jpeg,
+            url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
+            dimensions: [
+                MediaDimension(dimensionType: .xPixels, value: 2560),
+                MediaDimension(dimensionType: .yPixels, value: 1920),
+                MediaDimension(dimensionType: .sizeKb, value: 623)
+            ],
+            name: nil,
+            description: nil,
+            tags: [Tag(body: "beach", count: 3)]
+        ),
+        referenceFrame: nil,
+        orderBy: .name,
+        disposition: Disposition(
+            sequence: 2,
+            count: 2,
+            limit: 20,
+            offset: 0,
+            order: .ascending,
+            orderBy: "name"
+        )
+    )
 
 }
