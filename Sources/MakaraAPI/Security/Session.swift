@@ -9,7 +9,7 @@ import Foundation
 import CryptoKit
 
 
-class Session: Decodable {
+public struct Session: Codable {
     
     private static let path = "/session"
     
@@ -17,18 +17,54 @@ class Session: Decodable {
     public let apiKey: String
     public let userPublicId: String
     
-    required init(from decoder: Decoder) throws {
-        let data = try decoder.container(keyedBy: Keys.self)
-        publicId = try data.decode(String.self, forKey: .sessionId)
-        apiKey = try data.decode(String.self, forKey: .apiKey)
-        userPublicId = try data.decode(String.self, forKey: .userId)
-        return
-    }
-    
     private enum Keys: String, CodingKey {
         case apiKey = "api_key"
         case sessionId = "session_id"
         case userId = "user_id"
+    }
+    
+    static func create(
+        email: String,
+        secret: String,
+        callback: @escaping (Error?, Session?) -> Void
+    ) -> Void {
+        
+        Request.make(
+            path: Self.path,
+            payload: Self.SecretPayload(
+                secret: secret,
+                email: email
+            ),
+            session: nil,
+            query: nil,
+            method: HTTPMethod.POST,
+            then: { (error: Error?, data: Data?) -> Void in
+                Request.decodeResponse(error, data, Self.self, callback)
+            }
+        )
+        
+        return
+        
+    }
+    
+    static func create(
+        token: String,
+        callback: @escaping (Error?, Session?) -> Void
+    ) -> Void {
+        
+        Request.make(
+            path: Self.path,
+            payload: Self.TokenPayload(token: token),
+            session: nil,
+            query: nil,
+            method: HTTPMethod.POST,
+            then: { (error: Error?, data: Data?) -> Void in
+                Request.decodeResponse(error, data, Self.self, callback)
+            }
+        )
+        
+        return
+
     }
 
     internal func signature(
@@ -40,7 +76,7 @@ class Session: Decodable {
         let payload = data?.encodedDataString ?? ""
         let timestamp = String(describing: Int(Date().timeIntervalSince1970))
         let stringToHash = timestamp + path + payload
-        let hmac = HMAC<SHA512>.authenticationCode(
+        let hmac = HMAC<SHA256>.authenticationCode(
             for: stringToHash.data(using: .utf8)!,
             using: SymmetricKey(data: apiKey)
         )
@@ -48,4 +84,13 @@ class Session: Decodable {
         return String(describing: hmac)
     }
     
+    fileprivate struct SecretPayload: Codable {
+        let secret: String
+        let email: String
+    }
+    
+    fileprivate struct TokenPayload: Codable {
+        let token: String
+    }
+
 }

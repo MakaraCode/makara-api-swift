@@ -34,8 +34,7 @@ public struct CrewMember: Codable, PubliclyIdentified {
             count: 1,
             limit: 50,
             offset: 0,
-            order: .ascending,
-            orderBy: CrewMember.OrderBy.name.rawValue
+            order: .ascending
         )
     )
     

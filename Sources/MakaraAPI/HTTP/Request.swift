@@ -8,7 +8,7 @@
 import Foundation
 
 
-class Request {
+internal class Request {
     
     private static let agent = "Makara API Swift 0.0.1"
     private static let apiEndpoint = "https://makara.com/api"
@@ -17,6 +17,33 @@ class Request {
     )
     private static let signatureHeaderName = "X-Makara-Signature"
     private static let sessionIdHeaderName = "X-Makara-Session-ID"
+    private static let decoder = JSONDecoder();
+    
+    public static func make<T: Encodable>(
+        path: String,
+        payload: T,
+        session: Session?,
+        query: QueryString?,
+        method: HTTPMethod,
+        then callback: @escaping (Error?, Data?) -> Void
+    ) {
+        
+        let data: RequestData
+        do { try data = RequestData(data: payload) }
+        catch { callback(error, nil); return }
+        
+        Self.make(
+            path: path,
+            data: data,
+            session: session,
+            query: query,
+            method: method,
+            then: callback
+        )
+        
+        return
+        
+    }
     
     public static func make(
         path: String,
@@ -27,13 +54,10 @@ class Request {
         then callback: @escaping (Error?, Data?) -> Void
     ) {
         
-        let shouldEncodeDataInURL: Bool
         if method == .GET && data != nil {
-            shouldEncodeDataInURL = true
-        } else {
-            shouldEncodeDataInURL = false
+            callback(MakaraAPIError(.inconsistentState), nil)
         }
-        
+
         let request: URLRequest
         
         do {
@@ -42,8 +66,7 @@ class Request {
                 data,
                 session,
                 query,
-                method,
-                shouldEncodeDataInURL
+                method
             )
         } catch {
             callback(error, nil)
@@ -103,8 +126,7 @@ class Request {
         _ data: RequestData?,
         _ session: Session?,
         _ query: QueryString?,
-        _ method: HTTPMethod,
-        _ shouldEncodeDataInUrl: Bool
+        _ method: HTTPMethod
     ) throws -> URLRequest {
 
         let fullURL: String
@@ -115,21 +137,7 @@ class Request {
             fullURL = Self.apiEndpoint + path
         }
 
-        let targetURL: URL?
-
-        if shouldEncodeDataInUrl == true, let data = data {
-            if query != nil {
-                targetURL = URL(string: (
-                    fullURL + "&" + data.asQueryStringArgument()
-                ))
-            } else {
-                targetURL = URL(string: (
-                    fullURL + "?" + data.asQueryStringArgument()
-                ))
-            }
-        } else {
-            targetURL = URL(string: fullURL)
-        }
+        let targetURL = URL(string: fullURL)
 
         guard targetURL != nil else {
           throw MakaraAPIError(.inconsistentState)
@@ -139,7 +147,7 @@ class Request {
         request.httpMethod = method.rawValue
         request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
         request.setValue(agent, forHTTPHeaderField: "User-Agent")
-        if data != nil && shouldEncodeDataInUrl == false {
+        if data != nil {
             request.setValue(
               "application/json",
               forHTTPHeaderField: "Content-Type"
@@ -153,7 +161,10 @@ class Request {
                 data: data,
                 apiKey: session.apiKey.data(using: .utf8)!
             )
-            request.setValue(signature, forHTTPHeaderField: signatureHeaderName)
+            request.setValue(
+                signature,
+                forHTTPHeaderField: signatureHeaderName
+            )
             request.setValue(
                 session.publicId,
                 forHTTPHeaderField: sessionIdHeaderName
@@ -162,4 +173,32 @@ class Request {
 
         return request
     }
+    
+    internal static func decodeResponse<T: Codable>(
+        _ error: Error?,
+        _ data: Data?,
+        _ decodableType: T.Type,
+        _ callback: (Error?, T?) -> Void
+    ) -> Void {
+        
+        guard let data = data else {
+            callback(error ?? MakaraAPIError(.inconsistentState), nil)
+            return
+        }
+        
+        let decoded: T
+        
+        do {
+            try decoded = Self.decoder.decode(decodableType, from: data)
+        } catch {
+            callback(error, nil)
+            return
+        }
+
+        callback(nil, decoded)
+        
+        return
+        
+    }
+    
 }

@@ -123,8 +123,7 @@ public struct Shop: Codable, Hashable, Identifiable {
             count: 2,
             limit: 20,
             offset: 0,
-            order: .ascending,
-            orderBy: "name"
+            order: .ascending
         )
     )
     
@@ -162,8 +161,7 @@ public struct Shop: Codable, Hashable, Identifiable {
             count: 2,
             limit: 20,
             offset: 0,
-            order: .ascending,
-            orderBy: "name"
+            order: .ascending
         )
     )
 

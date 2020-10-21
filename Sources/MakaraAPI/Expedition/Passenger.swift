@@ -50,8 +50,7 @@ public struct Passenger: Codable, PubliclyIdentified {
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending,
-            orderBy: "name"
+            order: .ascending
         ),
         paymentOutstanding: false,
         packageId: "demo_package_1"
@@ -71,8 +70,7 @@ public struct Passenger: Codable, PubliclyIdentified {
             count: 2,
             limit: 50,
             offset: 0,
-            order: .ascending,
-            orderBy: "name"
+            order: .ascending
         ),
         paymentOutstanding: false,
         packageId: "demo_package_2"
