@@ -18,7 +18,7 @@ public struct Human: Codable, PubliclyIdentified {
     public let birthDate: Date?
     public let email: String?
 
-    private enum Keys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case publicId = "public_id"
         case name
         case birthDate = "birth_date"

@@ -2,14 +2,37 @@ import XCTest
 @testable import MakaraAPI
 
 final class MakaraAPITests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual("One", "One")
+    
+    func testCreateHuman() {
+        
+        let expectation = XCTestExpectation()
+        
+        let emailSeed = String(Int.random(in: 1..<9999999999))
+        
+        Human.create(
+            name: HumanName([
+                HumanNameComponent(1, "Barack"),
+                HumanNameComponent(2, "Obama")
+            ]),
+            email: emailSeed + "@makara.test.nil",
+            secret: "somethinggood",
+            session: nil,
+            then: { error, human in
+                XCTAssertNil(error)
+                XCTAssertNotNil(human)
+                expectation.fulfill()
+                return
+            }
+        )
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testCreateHuman", testCreateHuman),
     ]
 }
+

@@ -130,11 +130,12 @@ internal class Request {
     ) throws -> URLRequest {
 
         let fullURL: String
+        let endpoint = Self.deriveEndpoint()
 
         if let query = query {
-            fullURL = Self.apiEndpoint + path + query.paramString
+            fullURL = endpoint + path + query.paramString
         } else {
-            fullURL = Self.apiEndpoint + path
+            fullURL = endpoint + path
         }
 
         let targetURL = URL(string: fullURL)
@@ -199,6 +200,16 @@ internal class Request {
         
         return
         
+    }
+    
+    private static func deriveEndpoint() -> String {
+        if let environment = getenv("MAKARA_API_ENDPOINT") {
+            guard let endpoint = String(utf8String: environment) else {
+                fatalError("Bad environment variable")
+            }
+            return endpoint
+        }
+        return Self.apiEndpoint
     }
     
 }
