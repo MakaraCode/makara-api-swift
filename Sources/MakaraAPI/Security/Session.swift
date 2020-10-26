@@ -17,16 +17,16 @@ public struct Session: Codable {
     public let apiKey: String
     public let userPublicId: String
     
-    private enum Keys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case apiKey = "api_key"
-        case sessionId = "session_id"
-        case userId = "user_id"
+        case publicId = "public_id"
+        case userPublicId = "agent_id"
     }
     
     static func create(
         email: String,
         secret: String,
-        callback: @escaping (Error?, Session?) -> Void
+        then callback: @escaping (Error?, Session?) -> Void
     ) -> Void {
         
         Request.make(
@@ -49,7 +49,7 @@ public struct Session: Codable {
     
     static func create(
         token: String,
-        callback: @escaping (Error?, Session?) -> Void
+        then callback: @escaping (Error?, Session?) -> Void
     ) -> Void {
         
         Request.make(
