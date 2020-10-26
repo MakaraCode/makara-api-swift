@@ -17,6 +17,17 @@ public struct Session: Codable {
     public let apiKey: String
     public let userPublicId: String
     
+    public init (
+        publicId: String,
+        apiKey: String,
+        userPublicId: String
+    ) {
+        self.publicId = publicId
+        self.apiKey = apiKey
+        self.userPublicId = userPublicId
+        return
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case apiKey = "api_key"
         case publicId = "public_id"
