@@ -16,7 +16,7 @@ public struct HumanNameComponent: Codable, Comparable, CustomStringConvertible {
         return self.content
     } }
     
-    init(_ sequence: Int, _ content: String) {
+    public init(_ sequence: Int, _ content: String) {
         self.sequence = sequence
         self.content = content
     }
@@ -53,7 +53,7 @@ public struct HumanName: Codable, CustomStringConvertible {
         return self.whole
     } }
     
-    init (_ components: Array<HumanNameComponent>) {
+    public init (_ components: Array<HumanNameComponent>) {
         self.components = components
     }
 }
