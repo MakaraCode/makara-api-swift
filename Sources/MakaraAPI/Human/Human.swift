@@ -11,7 +11,7 @@ import Foundation
 
 public struct Human: Codable, PubliclyIdentified {
     
-    private static let path = "/human"
+    internal static let path = "/human"
     
     public let publicId: String
     public let name: HumanName
@@ -45,6 +45,7 @@ public struct Human: Codable, PubliclyIdentified {
             method: HTTPMethod.POST,
             then: { (error: Error?, data: Data?) -> Void in
                 Request.decodeResponse(error, data, Self.self, callback)
+                return
             }
         )
         
