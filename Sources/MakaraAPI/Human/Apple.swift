@@ -21,7 +21,7 @@ public struct AppleHuman: Codable, PubliclyIdentified {
         case appleId = "apple_id"
     }
     
-    static func create(
+    public static func create(
         identityToken: String,
         name: HumanName,
         session: Session?,
