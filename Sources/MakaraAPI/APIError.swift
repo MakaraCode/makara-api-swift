@@ -17,7 +17,7 @@ public struct MakaraAPIError: MakaraError {
     internal init(_ kind: Kind, message: String? = nil) {
         self.kind = kind
         self.message = message ?? kind.rawValue
-        self.id = RandomNumber(withBitLength: 128).string
+        self.id = RandomNumber(.large).string
         return
     }
 

@@ -11,21 +11,32 @@ import Foundation
 
 public struct RandomNumber {
     
-    public let integer: Int
+    public let number: Decimal
     
-    public init(withBitLength bitLength: Int = 63) {
-        let maxSize = Int(pow(Double(2), Double(bitLength)))
-        self.integer = Int.random(in: 0..<maxSize)
+    public init(_ size: RandomNumber.Size = .small) {
+        self.number = Decimal(string: Self.build(size))!
         return
     }
     
+    private static func build(_ size: Size) -> String {
+        let base = Int.random(in: 0..<Int.max)
+        if size == .small { return "\(base)" }
+        let extra = Int.random(in: 0..<Int.max)
+        return "\(base)\(extra)"
+    }
+    
     public var string: String { get {
-        let utf8String = String(self.integer).data(using: .utf8)
+        let utf8String = "\(self.number)".data(using: .utf8)
         let base64 = utf8String!.base64EncodedString()
         return base64
                 .replacingOccurrences(of: "+", with: "-")
                 .replacingOccurrences(of: "/", with: "_")
                 .replacingOccurrences(of: "=", with: "")
     } }
+    
+    public enum Size {
+        case small
+        case large
+    }
     
 }
