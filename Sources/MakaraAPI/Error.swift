@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol MakaraError: Identifiable, Error, CustomStringConvertible {
+public protocol MakaraError: Identifiable, Error, CustomStringConvertible {
     
     var message: String { get }
     
