@@ -11,15 +11,15 @@ import Foundation
 
 public struct RandomNumber {
     
-    let integer: Int
+    public let integer: Int
     
-    init(withBitLength bitLength: Int = 63) {
+    public init(withBitLength bitLength: Int = 63) {
         let maxSize = Int(pow(Double(2), Double(bitLength)))
         self.integer = Int.random(in: 0..<maxSize)
         return
     }
     
-    var string: String { get {
+    public var string: String { get {
         let utf8String = String(self.integer).data(using: .utf8)
         let base64 = utf8String!.base64EncodedString()
         return base64
