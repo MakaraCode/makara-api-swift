@@ -34,7 +34,7 @@ public struct Session: Codable {
         case userPublicId = "agent_id"
     }
     
-    static func create(
+    public static func create(
         email: String,
         secret: String,
         then callback: @escaping (Error?, Session?) -> Void
@@ -58,7 +58,7 @@ public struct Session: Codable {
         
     }
     
-    static func create(
+    public static func create(
         token: String,
         then callback: @escaping (Error?, Session?) -> Void
     ) -> Void {
@@ -78,7 +78,7 @@ public struct Session: Codable {
 
     }
     
-    static func create(
+    public static func create(
         siwaToken: String,
         then callback: @escaping (Error?, Session?) -> Void
     ) -> Void {
