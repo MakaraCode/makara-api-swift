@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct RandomNumber {
+public struct RandomNumber {
     
     let integer: Int
     
