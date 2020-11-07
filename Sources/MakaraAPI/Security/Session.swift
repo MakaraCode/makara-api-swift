@@ -77,6 +77,26 @@ public struct Session: Codable {
         return
 
     }
+    
+    static func create(
+        siwaToken: String,
+        then callback: @escaping (Error?, Session?) -> Void
+    ) -> Void {
+        
+        Request.make(
+            path: Self.path,
+            payload: Self.SiwaPayload(siwa_token: siwaToken),
+            session: nil,
+            query: nil,
+            method: HTTPMethod.POST,
+            then: { (error: Error?, data: Data?) -> Void in
+                Request.decodeResponse(error, data, Self.self, callback)
+            }
+        )
+        
+        return
+
+    }
 
     internal func signature(
         path: String,
@@ -102,6 +122,10 @@ public struct Session: Codable {
     
     fileprivate struct TokenPayload: Codable {
         let token: String
+    }
+    
+    fileprivate struct SiwaPayload: Codable {
+        let siwa_token: String
     }
 
 }
