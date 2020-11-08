@@ -98,6 +98,44 @@ public struct Session: Codable {
 
     }
 
+    public static func fromEnvironmentVariables(
+        publicIdVariableName: String = "MAKARA_API_SESSION_ID",
+        apiKeyVariableName: String = "MAKARA_API_KEY",
+        userIdVariableName: String = "MAKARA_API_USER_ID"
+    ) throws -> Session {
+        
+        guard let ePublicId = getenv(publicIdVariableName) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+        
+        guard let publicId = String(utf8String: ePublicId) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+        
+        guard let eApiKey = getenv(apiKeyVariableName) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+        
+        guard let apiKey = String(utf8String: eApiKey) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+        
+        guard let eUserId = getenv(userIdVariableName) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+        
+        guard let userId = String(utf8String: eUserId) else {
+            throw MakaraAPIError(.badConfiguration)
+        }
+
+        return MakaraAPI.Session(
+            publicId: publicId,
+            apiKey: apiKey,
+            userPublicId: userId
+        )
+
+    }
+
     internal func signature(
         path: String,
         data: RequestData?,

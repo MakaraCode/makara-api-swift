@@ -79,8 +79,10 @@ public struct MakaraAPIError: MakaraError {
         case notImplemented = """
         The requested functionality is not yet implemented by Makara API Swift
         """
+        case badConfiguration = """
+        Makara API is not configured in such a way as to allow it to
+        peform your request. You may be missing an environment variable.
+        """
     }
     
 }
-
-
