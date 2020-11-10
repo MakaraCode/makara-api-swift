@@ -47,6 +47,28 @@ public struct AppleHuman: Codable, PubliclyIdentified {
 
     }
     
+    public static func retrieve(
+        identityToken: String,
+        session: Session?,
+        then callback: @escaping (Error?, AppleHuman?) -> Void
+    ) {
+        
+        Request.make(
+            path: Self.path,
+            data: nil,
+            session: session,
+            query: QueryString(targetsOnly: [
+                UrlTarget(stringValue: identityToken, key: "token")
+            ]),
+            method: HTTPMethod.GET,
+            then: { (error: Error?, data: Data?) -> Void in
+                Request.decodeResponse(error, data, Self.self, callback)
+                return
+            }
+        )
+        
+    }
+    
     fileprivate struct CreatePayload: Codable {
         let name: HumanName
         let identity_token: String

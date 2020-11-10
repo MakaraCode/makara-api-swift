@@ -10,7 +10,6 @@ import Foundation
 
 internal struct UrlTarget {
 
-    private let entityKey = "entity_id"
     internal let key: String
     internal let value: String
 
@@ -25,13 +24,7 @@ internal struct UrlTarget {
         self.value = String(value)
         return
     }
-    
-    init(forEntityId entityId: String) {
-        self.key = self.entityKey
-        self.value = entityId
-        return
-    }
-    
+
     internal static func createSequence(
         key: String,
         values: [String]
