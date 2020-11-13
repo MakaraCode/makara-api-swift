@@ -3,11 +3,6 @@ import XCTest
 
 final class MakaraAPI_BasicTests: XCTestCase {
     
-    static internal func createTestEmail() -> String {
-        let emailSeed = String(Int.random(in: 1..<9999999999999))
-        return emailSeed + "@makara.test.nil"
-    }
-    
     func testCreateHuman() {
         
         let expectation = XCTestExpectation()
@@ -17,8 +12,8 @@ final class MakaraAPI_BasicTests: XCTestCase {
                 HumanNameComponent(1, "Barack"),
                 HumanNameComponent(2, "Obama")
             ]),
-            email: Self.createTestEmail(),
-            secret: "somethinggood",
+            email: TestUtility.createTestEmail(),
+            secret: TestUtility.testHumanSecret,
             session: nil,
             then: { error, human in
                 XCTAssertNil(error)
@@ -38,7 +33,7 @@ final class MakaraAPI_BasicTests: XCTestCase {
         
         let expectation = XCTestExpectation()
         
-        let email = Self.createTestEmail()
+        let email = TestUtility.createTestEmail()
         let secret = "somethinggood"
         
         Human.create(

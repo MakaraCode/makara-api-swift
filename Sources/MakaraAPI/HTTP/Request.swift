@@ -148,6 +148,7 @@ internal class Request {
         request.httpMethod = method.rawValue
         request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
         request.setValue(agent, forHTTPHeaderField: "User-Agent")
+        request.httpShouldHandleCookies = false
         if data != nil {
             request.setValue(
               "application/json",
@@ -159,7 +160,6 @@ internal class Request {
         if let session = session {
             let signature = try session.signature(
                 path: path,
-                data: data,
                 apiKey: session.apiKey.data(using: .utf8)!
             )
             request.setValue(

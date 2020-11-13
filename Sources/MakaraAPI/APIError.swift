@@ -83,6 +83,9 @@ public struct MakaraAPIError: MakaraError {
         Makara API is not configured in such a way as to allow it to
         peform your request. You may be missing an environment variable.
         """
+        case testError = """
+        A test case has entered an unexpected state
+        """
     }
     
 }

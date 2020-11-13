@@ -10,32 +10,70 @@ import Foundation
 
 public struct Shop: Codable, Hashable, Identifiable {
     
+    internal static let path = "/shop"
+    internal static let listPath = Self.path + "/list"
+    
     public let publicId: String
     public let name: String
     public let location: Location?
     public let address: Address?
     public let coverImage: Image?
-    public let referenceFrame: SpatialReferenceFrame?
-    public let orderBy: Shop.OrderBy
+    public let profileImage: Image?
     public let disposition: Disposition
+    public let orderBy: Shop.OrderBy
     
     public var id: String { get { return publicId } }
     
-    public static func retrieve(
-        withPublicId publicId: String,
-        then callback: @escaping (_: Error?, _: Shop?) -> Void
+    public func update(
+        session: Session,
+        name: String,
+        then callback: @escaping (Error?, Shop?) -> Void
     ) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: {
-            callback(nil, self.demoShop1)
-        })
+        Request.make(
+            path: Self.path,
+            payload: UpdatePayload(public_id: self.publicId, name: name),
+            session: session,
+            query: nil,
+            method: HTTPMethod.PUT,
+            then: { (error, data) in
+                Request.decodeResponse(error, data, Self.self, callback)
+                return
+            }
+        )
         
         return
+        
+    }
+    
+    public static func retrieve(
+        withPublicId publicId: String,
+        session: Session,
+        then callback: @escaping (Error?, Shop?) -> Void
+    ) {
+        
+        Request.make(
+            path: Self.path,
+            data: nil,
+            session: session,
+            query: QueryString(
+                targetsOnly: [
+                    UrlTarget(stringValue: publicId, key: "public_id")
+                ]
+            ),
+            method: HTTPMethod.GET,
+            then: { (error, data) in
+                Request.decodeResponse(error, data, Self.self, callback)
+                return
+            }
+        )
+        
+        return
+
     }
     
     public static func retrieveMany(
-        nameFragment: String? = nil,
-        referenceLocation: Coordinates? = nil,
+        session: Session,
         order: Order = .ascending,
         orderBy: Shop.OrderBy = .name,
         offset: Int = 0,
@@ -43,23 +81,62 @@ public struct Shop: Codable, Hashable, Identifiable {
         then callback: @escaping (_: Error?, _: Array<Shop>?) -> Void
     ) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: {
-            callback(nil, [Self.demoShop1])
-        })
+        let targets = [
+            UrlTarget(integerValue: offset, key: "offset"),
+            UrlTarget(integerValue: limit, key: "limit"),
+            UrlTarget(stringValue: order.rawValue, key: "order"),
+            UrlTarget(stringValue: orderBy.rawValue, key: "order_by")
+        ]
         
+        Request.make(
+            path: Self.listPath,
+            data: nil,
+            session: session,
+            query: QueryString(targetsOnly: targets),
+            method: HTTPMethod.GET,
+            then: { (error, data) in
+                Request.decodeResponse(error, data, Array<Self>.self, callback)
+                return
+            }
+        )
+
         return
         
     }
     
     public static func create(
         name: String,
-        location: Location? = nil,
-        address: Address? = nil,
+        session: Session,
         then callback: @escaping (_: Error?, _: Shop?) -> Void
     ) {
-        fatalError("Not implemented")
+        
+        let payload = CreatePayload(name: name)
+        
+        Request.make(
+            path: Self.path,
+            payload: payload,
+            session: session,
+            query: nil,
+            method: HTTPMethod.POST,
+            then: { (error, data) in
+                Request.decodeResponse(error, data, Self.self, callback)
+                return
+            }
+        )
+        
+        return
+
     }
     
+    fileprivate struct CreatePayload: Codable {
+        let name: String
+    }
+    
+    fileprivate struct UpdatePayload: Codable {
+        let public_id: String
+        let name: String
+    }
+
     public enum OrderBy: String, Codable {
         case name = "name"
         case created = "created"
@@ -72,7 +149,7 @@ public struct Shop: Codable, Hashable, Identifiable {
         case location = "location"
         case address = "address"
         case coverImage = "cover_image"
-        case referenceFrame = "reference_frame"
+        case profileImage = "profile_image"
         case orderBy = "order_by"
         case disposition = "disposition"
     }
@@ -116,15 +193,15 @@ public struct Shop: Codable, Hashable, Identifiable {
             description: nil,
             tags: [Tag(body: "island", count: 4)]
         ),
-        referenceFrame: nil,
-        orderBy: .name,
+        profileImage: nil,
         disposition: Disposition(
             sequence: 1,
             count: 2,
             limit: 20,
             offset: 0,
             order: .ascending
-        )
+        ),
+        orderBy: .name
     )
     
     public static let demoShop2 = Shop(
@@ -154,15 +231,15 @@ public struct Shop: Codable, Hashable, Identifiable {
             description: nil,
             tags: [Tag(body: "beach", count: 3)]
         ),
-        referenceFrame: nil,
-        orderBy: .name,
+        profileImage: nil,
         disposition: Disposition(
             sequence: 2,
             count: 2,
             limit: 20,
             offset: 0,
             order: .ascending
-        )
+        ),
+        orderBy: .name
     )
 
 }

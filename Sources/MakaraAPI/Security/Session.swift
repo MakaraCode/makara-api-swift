@@ -13,6 +13,8 @@ public struct Session: Codable {
     
     private static let path = "/session"
     
+    private static let timestampResolution = 900
+    
     public let publicId: String
     public let apiKey: String
     public let userPublicId: String
@@ -138,19 +140,22 @@ public struct Session: Codable {
 
     internal func signature(
         path: String,
-        data: RequestData?,
         apiKey: Data
     ) throws -> String {
 
-        let payload = data?.encodedDataString ?? ""
-        let timestamp = String(describing: Int(Date().timeIntervalSince1970))
-        let stringToHash = timestamp + path + payload
+        let timestamp = Int(Date().timeIntervalSince1970)
+        let timekey = timestamp - (timestamp % Self.timestampResolution)
+        let stringToHash = String(describing: timekey) + path
+        
         let hmac = HMAC<SHA256>.authenticationCode(
             for: stringToHash.data(using: .utf8)!,
             using: SymmetricKey(data: apiKey)
         )
+        
+        let hmacData = Data(hmac)
+        let base64 = hmacData.base64EncodedString()
+        return base64
 
-        return String(describing: hmac)
     }
     
     fileprivate struct SecretPayload: Codable {
