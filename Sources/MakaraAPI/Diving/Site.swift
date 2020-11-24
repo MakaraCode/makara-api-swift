@@ -8,55 +8,82 @@
 import Foundation
 
 
-public struct DiveSite: Codable, PubliclyIdentified {
+public struct DiveSite: Codable, Journaled, Located {
     
-    public let publicId: String
-    public let name: String
+    internal static let path = "/dive-site"
+    
+    public let journalEntry: JournalEntry
+    public let pointOfInterest: PointOfInterest
     public let description: String?
-    public let location: Location
-    public let depthMetres: Int
-    public let referenceFrame: SpatialReferenceFrame?
+    public let shopProfile: SiteShopProfile?
     public let tags: Array<Tag>
     public let disposition: Disposition
+    public let orderBy: DiveSite.OrderBy
     
     public enum OrderBy: String, Codable {
         case name = "name"
         case metresFromReference = "metres_from_reference"
+        case created = "created"
     }
 
     internal enum CodingKeys: String, CodingKey {
-        case publicId = "public_id"
-        case name
+        case journalEntry = "journal"
+        case pointOfInterest = "point_of_interest"
+        case shopProfile = "shop_profile"
         case description
-        case location
-        case depthMetres = "depth_metres"
-        case referenceFrame = "reference_frame"
         case tags
         case disposition
+        case orderBy = "order_by"
     }
     
     public static let demoSite1 = DiveSite(
-        publicId: "demo_divesite_1",
-        name: "The Arch",
-        description: nil,
-        location: Location(
-            coordinates: Coordinates(
-                longitude: -31.527473,
-                latitude: 159.066132
-            ),
-            altitude: 0.0
+        journalEntry: JournalEntry(
+            publicId: "demo_divesite_1",
+            created: Date(),
+            creatingAgentId: "100"
         ),
-        depthMetres: 5,
-        referenceFrame: SpatialReferenceFrame(
+        pointOfInterest: PointOfInterest(
+            journalEntry: JournalEntry(
+                publicId: "demo_divesite_1",
+                created: Date(),
+                creatingAgentId: "100"
+            ),
+            name: "The Arch",
             location: Location(
                 coordinates: Coordinates(
-                    longitude: -31.527866,
-                    latitude: 159.049642
+                    longitude: 151.262945773938,
+                    latitude: -33.89370661280347
                 ),
                 altitude: 0.0
             ),
-            distanceMetres: 7900
+            profileImage: nil,
+            coverImage: Image(
+                publicId: "demo_proDive_image",
+                mediaQuality: .managed,
+                mediaCodec: .jpeg,
+                url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
+                dimensions: [
+                    MediaDimension(dimensionType: .xPixels, value: 2560),
+                    MediaDimension(dimensionType: .yPixels, value: 1920),
+                    MediaDimension(dimensionType: .sizeKb, value: 623)
+                ],
+                name: nil,
+                description: nil,
+                tags: [Tag(body: "island", count: 4)]
+            ),
+            referenceFrame: nil,
+            pointType: .shop,
+            disposition: Disposition(
+                sequence: 1,
+                count: 1,
+                limit: 1,
+                offset: 0,
+                order: .ascending
+            ),
+            orderBy: .created
         ),
+        description: nil,
+        shopProfile: nil,
         tags: [Tag(body: "Blue", count: 4)],
         disposition: Disposition(
             sequence: 1,
@@ -64,7 +91,8 @@ public struct DiveSite: Codable, PubliclyIdentified {
             limit: 1,
             offset: 0,
             order: .descending
-        )
+        ),
+        orderBy: .name
     )
 
 }
