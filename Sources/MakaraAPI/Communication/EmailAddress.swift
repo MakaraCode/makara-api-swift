@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct EmailAddress: Journaled, Decodable {
+struct EmailAddress: Journaled, Codable {
         
     let journalEntry: JournalEntry
     let email: String
@@ -19,22 +19,8 @@ struct EmailAddress: Journaled, Decodable {
         get { return self.verified != nil }
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: JSONObjectKeys.self)
-        email = try container.decode(String.self, forKey: .email)
-        verified = try MakaraDate.optionallyDecode(
-            apiTimeString: try container.decode(String?.self, forKey: .verified)
-        )
-        requiresVerification = try container.decode(
-            Bool.self,
-            forKey: .requiresVerification
-        )
-        journalEntry = try container.decode(JournalEntry.self, forKey: .journal)
-        return
-    }
-    
-    enum JSONObjectKeys: String, CodingKey {
-        case journal = "JournalEntry"
+    enum CodingKeys: String, CodingKey {
+        case journalEntry = "JournalEntry"
         case email = "email"
         case verified = "verified"
         case requiresVerification = "requires_verification"

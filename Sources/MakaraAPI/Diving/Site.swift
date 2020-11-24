@@ -41,19 +41,19 @@ public struct DiveSite: Codable, PubliclyIdentified {
         description: nil,
         location: Location(
             coordinates: Coordinates(
-                longitude: "-31.527473",
-                latitude: "159.066132"
+                longitude: -31.527473,
+                latitude: 159.066132
             ),
-            earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
+            altitude: 0.0
         ),
         depthMetres: 5,
         referenceFrame: SpatialReferenceFrame(
             location: Location(
                 coordinates: Coordinates(
-                    longitude: "-31.527866",
-                    latitude: "159.049642"
+                    longitude: -31.527866,
+                    latitude: 159.049642
                 ),
-                earth3d: Earth3D(x: 1.0, y: 1.0, z: 1.0)
+                altitude: 0.0
             ),
             distanceMetres: 7900
         ),

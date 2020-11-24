@@ -11,7 +11,7 @@ import Foundation
 public struct SpatialReferenceFrame: Codable {
     
     let location: Location
-    let distanceMetres: Int
+    let distanceMetres: Float
     
     enum CodingKeys: String, CodingKey {
         case location = "location"

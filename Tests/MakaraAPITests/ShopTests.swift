@@ -37,6 +37,13 @@ final class MakaraAPI_ShopTests: XCTestCase {
                 Shop.create(
                     name: "Swift Test Shop",
                     session: session,
+                    location: Location(
+                        coordinates: Coordinates(
+                            longitude: 151.262945773938,
+                            latitude: -33.89370661280347
+                        ),
+                        altitude: 0.0
+                    ),
                     then: { (error, shop) in
                         Self.receiveShop(error, shop, expectation)
                         return

@@ -11,11 +11,11 @@ import Foundation
 public struct Location: Codable {
     
     let coordinates: Coordinates
-    let earth3d: Earth3D
+    let altitude: Float
     
     enum CodingKeys: String, CodingKey {
-        case coordinates = "coordinates"
-        case earth3d = "earth_3d"
+        case coordinates
+        case altitude
     }
     
 }

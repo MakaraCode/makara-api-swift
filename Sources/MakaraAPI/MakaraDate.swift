@@ -7,35 +7,16 @@
 
 import Foundation
 
-// Defunct... https://useyourloaf.com/blog/swift-codable-with-custom-dates/
-// Replace with a date decoder extension
 
-class MakaraDate {
-
-    private static let dateStringFormat = "yyyy-MM-dd_HH:mm:ss.SSSSSS"
-
-    public static func decode(apiTimeString rawTime: String) throws -> Date {
-
+extension DateFormatter {
+    
+    static let nozomiTime: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = MakaraDate.dateStringFormat
-        guard let time: Date = formatter.date(from: rawTime) else {
-            throw MakaraAPIError(.badResponse)
-        }
-        
-        return time
+        formatter.dateFormat = "yyyy-MM-dd_HH:mm:ss.SSSSSS"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 
-    }
-    
-    public static func optionallyDecode(
-        apiTimeString rawTime: String?
-    ) throws -> Date? {
-
-        if let rawTime = rawTime {
-            return try MakaraDate.decode(apiTimeString: rawTime)
-        }
-        
-        return nil
-
-    }
-    
 }

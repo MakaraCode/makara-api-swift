@@ -17,7 +17,11 @@ internal class Request {
     )
     private static let signatureHeaderName = "X-Makara-Signature"
     private static let sessionIdHeaderName = "X-Makara-Session-ID"
-    private static let decoder = JSONDecoder();
+    private static let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(DateFormatter.nozomiTime)
+        return decoder
+    }()
     
     public static func make<T: Encodable>(
         path: String,

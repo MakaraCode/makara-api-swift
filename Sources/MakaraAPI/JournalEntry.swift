@@ -7,26 +7,16 @@
 
 import Foundation
 
-internal struct JournalEntry: Decodable {
+public struct JournalEntry: Codable {
     
     let publicId: String
     let created: Date
-    let creatingAgent: Agent
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: JSONObjectKeys.self)
-        let agentId = try container.decode(String.self, forKey: .creatingAgent)
-        creatingAgent = StandaloneAgent(withId: agentId)
-        let rawTime = try container.decode(String.self, forKey: .created)
-        created = try MakaraDate.decode(apiTimeString: rawTime)
-        publicId = try container.decode(String.self, forKey: .publicId)
-        return
-    }
+    let creatingAgentId: String
 
-    enum JSONObjectKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case publicId = "public_id"
         case created = "created"
-        case creatingAgent = "creating_agent_id"
+        case creatingAgentId = "creating_agent_id"
     }
     
 }

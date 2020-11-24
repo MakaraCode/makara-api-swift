@@ -75,6 +75,13 @@ struct TestUtility {
             Shop.create(
                 name: "Swift Test Shop",
                 session: session,
+                location: Location(
+                    coordinates: Coordinates(
+                        longitude: 151.262945773938,
+                        latitude: -33.89370661280347
+                    ),
+                    altitude: 0.0
+                ),
                 then: { (error, shop) in
                     callback(error, shop, session)
                     return

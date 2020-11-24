@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol Journaled {
+protocol Journaled: PubliclyIdentified {
     
     var journalEntry: JournalEntry { get }
 
@@ -16,12 +16,13 @@ protocol Journaled {
 
 extension Journaled {
     
-    var created: Date { get { return self.journalEntry.created } }
-    var publicId: String { get {
+    public var created: Date { get { return self.journalEntry.created } }
+    public var publicId: String { get {
         return self.journalEntry.publicId
     } }
-    var creatingAgent: Agent { get {
-        return self.journalEntry.creatingAgent
+    public var creatingAgentId: String { get {
+        return self.journalEntry.creatingAgentId
     } }
     
 }
+

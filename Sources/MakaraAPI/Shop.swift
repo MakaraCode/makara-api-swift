@@ -8,21 +8,24 @@
 import Foundation
 
 
-public struct Shop: Codable, Hashable, Identifiable {
+public struct Shop: Codable, Journaled, Located {
     
     internal static let path = "/shop"
     internal static let listPath = Self.path + "/list"
     
-    public let publicId: String
-    public let name: String
-    public let location: Location?
+    public let journalEntry: JournalEntry
+    public let pointOfInterest: PointOfInterest
     public let address: Address?
-    public let coverImage: Image?
-    public let profileImage: Image?
     public let disposition: Disposition
     public let orderBy: Shop.OrderBy
     
-    public var id: String { get { return publicId } }
+    enum CodingKeys: String, CodingKey {
+        case journalEntry = "journal"
+        case pointOfInterest = "point_of_interest"
+        case address
+        case disposition
+        case orderBy = "order_by"
+    }
     
     public func update(
         session: Session,
@@ -107,10 +110,14 @@ public struct Shop: Codable, Hashable, Identifiable {
     public static func create(
         name: String,
         session: Session,
+        location: Location,
         then callback: @escaping (_: Error?, _: Shop?) -> Void
     ) {
         
-        let payload = CreatePayload(name: name)
+        let payload = CreatePayload(
+            name: name,
+            location: location
+        )
         
         Request.make(
             path: Self.path,
@@ -130,6 +137,7 @@ public struct Shop: Codable, Hashable, Identifiable {
     
     fileprivate struct CreatePayload: Codable {
         let name: String
+        let location: Location
     }
     
     fileprivate struct UpdatePayload: Codable {
@@ -141,17 +149,6 @@ public struct Shop: Codable, Hashable, Identifiable {
         case name = "name"
         case created = "created"
         case metresFromReference = "metres_from_reference"
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case publicId = "public_id"
-        case name = "name"
-        case location = "location"
-        case address = "address"
-        case coverImage = "cover_image"
-        case profileImage = "profile_image"
-        case orderBy = "order_by"
-        case disposition = "disposition"
     }
     
     public func hash(into hasher: inout Hasher) {
@@ -167,9 +164,51 @@ public struct Shop: Codable, Hashable, Identifiable {
     public static let demoShops: Array<Shop> = [Self.demoShop1, Self.demoShop2]
     
     public static let demoShop1 = Shop(
-        publicId: "demoId_proDive",
-        name: "Pro Dive Lord Howe Island",
-        location: nil,
+        journalEntry: JournalEntry(
+            publicId: "demoId_proDive",
+            created: Date(),
+            creatingAgentId: "100"
+        ),
+        pointOfInterest: PointOfInterest(
+            journalEntry: JournalEntry(
+                publicId: "demoId_proDive",
+                created: Date(),
+                creatingAgentId: "100"
+            ),
+            name: "Pro Dive Lord Howe Island",
+            location: Location(
+                coordinates: Coordinates(
+                    longitude: 151.262945773938,
+                    latitude: -33.89370661280347
+                ),
+                altitude: 0.0
+            ),
+            profileImage: nil,
+            coverImage: Image(
+                publicId: "demo_proDive_image",
+                mediaQuality: .managed,
+                mediaCodec: .jpeg,
+                url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
+                dimensions: [
+                    MediaDimension(dimensionType: .xPixels, value: 2560),
+                    MediaDimension(dimensionType: .yPixels, value: 1920),
+                    MediaDimension(dimensionType: .sizeKb, value: 623)
+                ],
+                name: nil,
+                description: nil,
+                tags: [Tag(body: "island", count: 4)]
+            ),
+            referenceFrame: nil,
+            pointType: .shop,
+            disposition: Disposition(
+                sequence: 1,
+                count: 1,
+                limit: 1,
+                offset: 0,
+                order: .ascending
+            ),
+            orderBy: .created
+        ),
         address: Address(
             publicId: "demo_address_proDive",
             postCode: "2898",
@@ -179,23 +218,8 @@ public struct Shop: Codable, Hashable, Identifiable {
             ],
             region: Region.AU_NSW
         ),
-        coverImage: Image(
-            publicId: "demo_proDive_image",
-            mediaQuality: .managed,
-            mediaCodec: .jpeg,
-            url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
-            dimensions: [
-                MediaDimension(dimensionType: .xPixels, value: 2560),
-                MediaDimension(dimensionType: .yPixels, value: 1920),
-                MediaDimension(dimensionType: .sizeKb, value: 623)
-            ],
-            name: nil,
-            description: nil,
-            tags: [Tag(body: "island", count: 4)]
-        ),
-        profileImage: nil,
         disposition: Disposition(
-            sequence: 1,
+            sequence: 2,
             count: 2,
             limit: 20,
             offset: 0,
@@ -205,9 +229,51 @@ public struct Shop: Codable, Hashable, Identifiable {
     )
     
     public static let demoShop2 = Shop(
-        publicId: "demoId_diveCenterBondi",
-        name: "Dive Centre Bondi",
-        location: nil,
+        journalEntry: JournalEntry(
+            publicId: "demoId_diveCenterBondi",
+            created: Date(),
+            creatingAgentId: "100"
+        ),
+        pointOfInterest: PointOfInterest(
+            journalEntry: JournalEntry(
+                publicId: "demoId_diveCenterBondi",
+                created: Date(),
+                creatingAgentId: "100"
+            ),
+            name: "Dive Centre Bondi",
+            location: Location(
+                coordinates: Coordinates(
+                    longitude: 151.262945773938,
+                    latitude: -33.89370661280347
+                ),
+                altitude: 0.0
+            ),
+            profileImage: Image(
+                publicId: "demo_proDive_image",
+                mediaQuality: .managed,
+                mediaCodec: .jpeg,
+                url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
+                dimensions: [
+                    MediaDimension(dimensionType: .xPixels, value: 2560),
+                    MediaDimension(dimensionType: .yPixels, value: 1920),
+                    MediaDimension(dimensionType: .sizeKb, value: 623)
+                ],
+                name: nil,
+                description: nil,
+                tags: [Tag(body: "beach", count: 3)]
+            ),
+            coverImage: nil,
+            referenceFrame: nil,
+            pointType: .shop,
+            disposition: Disposition(
+                sequence: 1,
+                count: 1,
+                limit: 1,
+                offset: 0,
+                order: .ascending
+            ),
+            orderBy: .created
+        ),
         address: Address(
             publicId: "demo_address_diveCenterBondi",
             postCode: "2026",
@@ -217,21 +283,6 @@ public struct Shop: Codable, Hashable, Identifiable {
             ],
             region: Region.AU_NSW
         ),
-        coverImage: Image(
-            publicId: "demo_proDive_image",
-            mediaQuality: .managed,
-            mediaCodec: .jpeg,
-            url: "https://blinkybeach.com/img/proDiveDemo.jpeg",
-            dimensions: [
-                MediaDimension(dimensionType: .xPixels, value: 2560),
-                MediaDimension(dimensionType: .yPixels, value: 1920),
-                MediaDimension(dimensionType: .sizeKb, value: 623)
-            ],
-            name: nil,
-            description: nil,
-            tags: [Tag(body: "beach", count: 3)]
-        ),
-        profileImage: nil,
         disposition: Disposition(
             sequence: 2,
             count: 2,
