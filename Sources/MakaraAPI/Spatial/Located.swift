@@ -16,23 +16,23 @@ public protocol Located {
 
 extension Located {
     
-    var name: String { get {
+    public var name: String { get {
         return self.pointOfInterest.name
     } }
     
-    var location: Location { get {
+    public var location: Location { get {
         return self.pointOfInterest.location
     } }
     
-    var coverImage: Image? { get {
+    public var coverImage: Image? { get {
         return self.pointOfInterest.coverImage
     } }
     
-    var profileImage: Image? { get {
+    public var profileImage: Image? { get {
         return self.pointOfInterest.profileImage
     } }
     
-    var referenceFrame: SpatialReferenceFrame? { get {
+    public var referenceFrame: SpatialReferenceFrame? { get {
         return self.pointOfInterest.referenceFrame
     } }
 
