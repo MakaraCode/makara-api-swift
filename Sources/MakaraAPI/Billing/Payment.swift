@@ -10,6 +10,8 @@ import Foundation
 
 public struct Payment: PubliclyIdentified, Codable {
     
+    public static let path = "/payment"
+    
     public let publicId: String
     public let amount: Amount
     public let method: PaymentMethod

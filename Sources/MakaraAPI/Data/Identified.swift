@@ -9,7 +9,7 @@ import Foundation
 
 
 public protocol PubliclyIdentified: Hashable, Identifiable {
-    
+
     var publicId: String { get }
     
 }
@@ -26,5 +26,5 @@ extension PubliclyIdentified {
         if (lhs.publicId == rhs.publicId) { return true }
         return false
     }
-    
+
 }

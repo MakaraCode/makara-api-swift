@@ -8,9 +8,9 @@
 import Foundation
 
 
-public struct Shop: Codable, Journaled, Located {
+public struct Shop: Codable, Journaled, Located, PubliclyRetrievable {
     
-    internal static let path = "/shop"
+    public static let path = "/shop"
     internal static let listPath = Self.path + "/list"
     
     public let journalEntry: JournalEntry
@@ -47,32 +47,6 @@ public struct Shop: Codable, Journaled, Located {
         
         return
         
-    }
-    
-    public static func retrieve(
-        withPublicId publicId: String,
-        session: Session,
-        then callback: @escaping (Error?, Shop?) -> Void
-    ) {
-        
-        Request.make(
-            path: Self.path,
-            data: nil,
-            session: session,
-            query: QueryString(
-                targetsOnly: [
-                    UrlTarget(stringValue: publicId, key: "public_id")
-                ]
-            ),
-            method: HTTPMethod.GET,
-            then: { (error, data) in
-                Request.decodeResponse(error, data, Self.self, callback)
-                return
-            }
-        )
-        
-        return
-
     }
     
     public static func retrieveMany(

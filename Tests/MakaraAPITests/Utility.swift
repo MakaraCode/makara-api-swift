@@ -63,13 +63,13 @@ struct TestUtility {
     }
     
     internal static func createTestShop(
-        then callback: @escaping (Error?, Shop?, Session?) -> Void
+        _ expectation: XCTestExpectation,
+        then callback: @escaping (Shop, Session) -> Void
     ) {
         
         Self.createTestSession { (error, human, session) in
             guard let session = session else {
-                callback(error ?? MakaraAPIError(.testError), nil, nil)
-                return
+                XCTFail(); expectation.fulfill(); return
             }
             
             Shop.create(
@@ -83,12 +83,47 @@ struct TestUtility {
                     altitude: 0.0
                 ),
                 then: { (error, shop) in
-                    callback(error, shop, session)
+                    guard let shop = shop else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    guard error == nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    callback(shop, session)
                     return
                 }
             )
             
             return
+        }
+        
+        return
+        
+    }
+    
+    internal static func createTestExpedition(
+        _ expectation: XCTestExpectation,
+        then callback: @escaping (Expedition, Session) -> Void
+    ) {
+        
+        Self.createTestShop(expectation) { (shop, session) in
+            
+            Expedition.create(
+                checkinTime: Date(),
+                checkinLocation: shop,
+                departureTime: Date(),
+                shop: shop,
+                session: session,
+                then: { (error, expedition) in
+                    guard let expedition = expedition else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    guard error == nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    callback(expedition, session)
+                    return
+            })
         }
         
         return

@@ -10,6 +10,8 @@ import Foundation
 
 public struct Gear: PubliclyIdentified, Codable {
     
+    static public let path = "/gear"
+    
     public let publicId: String
     public let passengerId: String
     public let quantity: Int
@@ -28,3 +30,4 @@ public struct Gear: PubliclyIdentified, Codable {
 
     
 }
+

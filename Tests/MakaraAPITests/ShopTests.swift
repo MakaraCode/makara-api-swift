@@ -59,14 +59,8 @@ final class MakaraAPI_ShopTests: XCTestCase {
         
         let expectation = XCTestExpectation()
         
-        TestUtility.createTestShop { (error, shop, session) in
-            guard let shop = shop else {
-                XCTFail(); expectation.fulfill(); return
-            }
-            guard let session = session else {
-                XCTFail(); expectation.fulfill(); return
-            }
-            
+        TestUtility.createTestShop(expectation) { (shop, session) in
+
             Shop.retrieve(
                 withPublicId: shop.publicId,
                 session: session
@@ -85,12 +79,8 @@ final class MakaraAPI_ShopTests: XCTestCase {
         
         let expectation = XCTestExpectation()
         
-        TestUtility.createTestShop { (error, shop, session) in
-    
-            guard let session = session else {
-                XCTFail(); expectation.fulfill(); return
-            }
-            
+        TestUtility.createTestShop(expectation) { (shop, session) in
+
             Shop.retrieveMany(
                 session: session
             ) { (error, shops) in
