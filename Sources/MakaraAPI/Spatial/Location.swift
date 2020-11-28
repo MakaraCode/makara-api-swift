@@ -10,8 +10,8 @@ import Foundation
 
 public struct Location: Codable {
     
-    let coordinates: Coordinates
-    let altitude: Float
+    public let coordinates: Coordinates
+    public let altitude: Float
     
     enum CodingKeys: String, CodingKey {
         case coordinates

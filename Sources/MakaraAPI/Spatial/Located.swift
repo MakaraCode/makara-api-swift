@@ -24,6 +24,14 @@ extension Located {
         return self.pointOfInterest.location
     } }
     
+    public var altitude: Float { get {
+        return self.pointOfInterest.location.altitude
+    } }
+    
+    public var coordinates: Coordinates { get {
+        return self.pointOfInterest.location.coordinates
+    } }
+    
     public var coverImage: Image? { get {
         return self.pointOfInterest.coverImage
     } }
