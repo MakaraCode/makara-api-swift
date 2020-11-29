@@ -18,4 +18,16 @@ public struct Location: Codable {
         case altitude
     }
     
+    public init(
+        _ coordinates: Coordinates,
+        altitude: Float = 0.0
+    ) {
+        
+        self.coordinates = coordinates
+        self.altitude = altitude
+
+        return
+        
+    }
+    
 }

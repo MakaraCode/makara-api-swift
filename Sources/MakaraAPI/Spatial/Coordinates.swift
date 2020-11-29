@@ -17,5 +17,17 @@ public struct Coordinates: Codable {
         case longitude = "longitude"
         case latitude = "latitude"
     }
+    
+    public init(
+        longitude: Float,
+        latitude: Float
+    ) {
+        
+        self.longitude = longitude
+        self.latitude = latitude
+        
+        return
+
+    }
 
 }
