@@ -12,32 +12,20 @@ public struct CrewMember: Codable, PubliclyIdentified {
     
     public let human: Human
     public let publicId: String
-    public let diveId: String
+    public let expeditionId: String
+    public let orderBy: CrewMember.OrderBy
     public let disposition: Disposition
 
-    private enum Keys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case human
         case publicId = "public_id"
-        case dispostion
+        case expeditionId = "expedition_id"
+        case orderBy = "order_by"
+        case disposition
     }
     
-    public enum OrderBy: String {
+    public enum OrderBy: String, Codable {
         case name
     }
-
-    public static let demoCrewMember1 = CrewMember(
-        human: Human.demoHuman3,
-        publicId: "demo_crewmember_1",
-        diveId: "demo_dive_1",
-        disposition: Disposition(
-            sequence: 1,
-            count: 1,
-            limit: 50,
-            offset: 0,
-            order: .ascending
-        )
-    )
-    
-    public static let demoCrew = [CrewMember.demoCrewMember1]
 
 }
