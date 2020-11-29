@@ -103,6 +103,10 @@ internal class Request {
             callback(MakaraAPIError(.inconsistentState), nil)
             return
         }
+        if httpResponse.statusCode == 404 {
+            callback(nil, nil)
+            return
+        }
         guard (200...299).contains(httpResponse.statusCode) else {
             let error: MakaraAPIError
             switch httpResponse.statusCode {
@@ -110,7 +114,6 @@ internal class Request {
             case 401: error = MakaraAPIError(.notAuthenticated)
             case 402: error = MakaraAPIError(.subscriptionProblem)
             case 403: error = MakaraAPIError(.notAuthorised)
-            case 404: error = MakaraAPIError(.notFound)
             case 429: error = MakaraAPIError(.rateLimit)
             case 500: error = MakaraAPIError(.genericServerError)
             case 502, 503, 504: error = MakaraAPIError(.serviceDisruption)
