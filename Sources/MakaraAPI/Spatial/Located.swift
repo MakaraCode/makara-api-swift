@@ -24,7 +24,7 @@ extension Located {
         return self.pointOfInterest.location
     } }
     
-    public var altitude: Float { get {
+    public var altitude: Double { get {
         return self.pointOfInterest.location.altitude
     } }
     

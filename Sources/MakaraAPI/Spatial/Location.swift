@@ -11,7 +11,7 @@ import Foundation
 public struct Location: Codable {
     
     public let coordinates: Coordinates
-    public let altitude: Float
+    public let altitude: Double
     
     enum CodingKeys: String, CodingKey {
         case coordinates
@@ -20,7 +20,7 @@ public struct Location: Codable {
     
     public init(
         _ coordinates: Coordinates,
-        altitude: Float = 0.0
+        altitude: Double = 0.0
     ) {
         
         self.coordinates = coordinates

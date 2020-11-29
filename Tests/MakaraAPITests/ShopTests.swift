@@ -38,7 +38,7 @@ final class MakaraAPI_ShopTests: XCTestCase {
                     name: "Swift Test Shop",
                     session: session,
                     location: Location(
-                        coordinates: Coordinates(
+                        Coordinates(
                             longitude: 151.262945773938,
                             latitude: -33.89370661280347
                         ),

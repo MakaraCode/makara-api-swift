@@ -50,7 +50,7 @@ public struct DiveSite: Codable, Journaled, Located {
             ),
             name: "The Arch",
             location: Location(
-                coordinates: Coordinates(
+                Coordinates(
                     longitude: 151.262945773938,
                     latitude: -33.89370661280347
                 ),

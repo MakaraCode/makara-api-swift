@@ -151,7 +151,7 @@ public struct Shop: Codable, Journaled, Located, PubliclyRetrievable {
             ),
             name: "Pro Dive Lord Howe Island",
             location: Location(
-                coordinates: Coordinates(
+                Coordinates(
                     longitude: 151.262945773938,
                     latitude: -33.89370661280347
                 ),
@@ -216,7 +216,7 @@ public struct Shop: Codable, Journaled, Located, PubliclyRetrievable {
             ),
             name: "Dive Centre Bondi",
             location: Location(
-                coordinates: Coordinates(
+                Coordinates(
                     longitude: 151.262945773938,
                     latitude: -33.89370661280347
                 ),
