@@ -137,18 +137,25 @@ internal class Request {
         let endpoint = Self.deriveEndpoint()
 
         if let query = query {
-            fullURL = endpoint + path + query.paramString
+            guard let parameters = query.paramString.addingPercentEncoding(
+                withAllowedCharacters: .urlQueryAllowed
+            ) else {
+                throw MakaraAPIError(
+                    .inconsistentState,
+                    message: "bad url encode"
+                )
+            }
+            fullURL = endpoint + path + parameters
         } else {
             fullURL = endpoint + path
         }
-
-        let targetURL = URL(string: fullURL)
-
-        guard targetURL != nil else {
-          throw MakaraAPIError(.inconsistentState)
+        
+        guard let targetURL = URL(string: fullURL) else {
+            throw MakaraAPIError(.inconsistentState, message: "nil targetURL")
         }
 
-        var request = URLRequest(url: targetURL!)
+
+        var request = URLRequest(url: targetURL)
         request.httpMethod = method.rawValue
         request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
         request.setValue(agent, forHTTPHeaderField: "User-Agent")
@@ -191,6 +198,7 @@ internal class Request {
             if let apiError = error as? MakaraAPIError {
                 if apiError.kind == .notFound && coerce404toNil {
                     callback(nil, nil)
+                    return
                 }
             }
             callback(error ?? MakaraAPIError(.inconsistentState), nil)

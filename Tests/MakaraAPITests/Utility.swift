@@ -38,22 +38,28 @@ struct TestUtility {
     }
     
     internal static func createTestSession(
-        then callback: @escaping (Error?, Human?, Session?) -> Void
+        _ expectation: XCTestExpectation,
+        then callback: @escaping (Human, Session) -> Void
     ) {
         
         let email = Self.createTestEmail()
         
         createTestHuman(email: email, then: { (error, human) in
-            guard error == nil else { callback(error, nil, nil); return }
+
             guard let human = human else {
-                callback(MakaraAPIError(.testError), nil, nil)
-                return
+                XCTFail(); expectation.fulfill(); return
             }
+    
             Session.create(
                 email: email,
                 secret: Self.testHumanSecret,
                 then: { (error, session) in
-                    callback(error, human, session)
+                    
+                    guard let session = session else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    
+                    callback(human, session)
                     return
                 }
             )
@@ -67,11 +73,8 @@ struct TestUtility {
         then callback: @escaping (Shop, Session) -> Void
     ) {
         
-        Self.createTestSession { (error, human, session) in
-            guard let session = session else {
-                XCTFail(); expectation.fulfill(); return
-            }
-            
+        Self.createTestSession(expectation) { (human, session) in
+    
             Shop.create(
                 name: "Swift Test Shop",
                 session: session,

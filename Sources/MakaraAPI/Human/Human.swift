@@ -9,9 +9,9 @@ import Foundation
 
 
 
-public struct Human: Codable, PubliclyIdentified {
+public struct Human: Codable, PubliclyRetrievable {
     
-    internal static let path = "/human"
+    public static let path = "/human"
     
     public let publicId: String
     public let name: HumanName

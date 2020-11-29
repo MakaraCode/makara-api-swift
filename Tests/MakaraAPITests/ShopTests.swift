@@ -27,13 +27,9 @@ final class MakaraAPI_ShopTests: XCTestCase {
         let expectation = XCTestExpectation()
     
         TestUtility.createTestSession(
-            then: { (error, human, session) in
-                guard let session = session else {
-                    XCTFail("no session")
-                    expectation.fulfill()
-                    return
-                }
-                
+            expectation,
+            then: { (human, session) in
+
                 Shop.create(
                     name: "Swift Test Shop",
                     session: session,

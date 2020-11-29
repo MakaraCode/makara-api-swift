@@ -29,6 +29,31 @@ final class MakaraAPI_BasicTests: XCTestCase {
         
     }
     
+    func testRetrieveNilHuman() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestSession(expectation) { human, session in
+            
+            Human.retrieve(
+                withPublicId: "garbage_garbage",
+                session: session,
+                then: { (error, human) in
+                    XCTAssertNil(error)
+                    XCTAssertNil(human)
+                    expectation.fulfill();
+                    return
+                }
+            )
+            
+        }
+
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
+    
     func testCreateSession() {
         
         let expectation = XCTestExpectation()
