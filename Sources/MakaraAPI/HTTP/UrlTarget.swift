@@ -13,23 +13,35 @@ internal struct UrlTarget {
     internal let key: String
     internal let value: String
 
-    init(stringValue value: String, key: String) {
+    init(_ value: String, key: String) {
         self.key = key
         self.value = value
         return
     }
     
-    init(integerValue value: Int, key: String) {
+    init(_ value: Int, key: String) {
         self.key = key
         self.value = String(value)
         return
     }
 
+    init(_ value: Bool, key: String) {
+        
+        self.key = key
+        switch value {
+        case true:
+            self.value = "true"
+        case false:
+            self.value = "false"
+        }
+        return
+    }
+    
     internal static func createSequence(
         key: String,
         values: [String]
     ) -> [UrlTarget] {
-        let targets = values.map {UrlTarget(stringValue: $0, key: key)}
+        let targets = values.map {UrlTarget($0, key: key)}
         return targets
     }
     
@@ -37,7 +49,7 @@ internal struct UrlTarget {
         key: String,
         values: [Int]
         ) -> [UrlTarget] {
-        let targets = values.map {UrlTarget(integerValue: $0, key: key)}
+        let targets = values.map {UrlTarget($0, key: key)}
         return targets
     }
 

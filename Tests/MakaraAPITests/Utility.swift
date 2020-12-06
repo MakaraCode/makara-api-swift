@@ -20,19 +20,31 @@ struct TestUtility {
     internal static let testHumanSecret = "somethinggood"
     
     internal static func createTestHuman(
-        email: String,
-        then callback: @escaping (Error?, Human?) -> Void
+        _ expectation: XCTestExpectation,
+        email: String? = nil,
+        then callback: @escaping (Human) -> Void
     ) {
+        
+        let creationEmail = email != nil ? email! : Self.createTestEmail()
         
         Human.create(
             name: HumanName([
                 HumanNameComponent(1, "Barack"),
                 HumanNameComponent(2, "Obama")
             ]),
-            email: email,
+            email: creationEmail,
             secret: Self.testHumanSecret,
             session: nil,
-            then: callback
+            then: { (error, human) in
+                guard let human = human else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                guard error == nil else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                callback(human)
+                return
+            }
         )
         
     }
@@ -44,11 +56,10 @@ struct TestUtility {
         
         let email = Self.createTestEmail()
         
-        createTestHuman(email: email, then: { (error, human) in
-
-            guard let human = human else {
-                XCTFail(); expectation.fulfill(); return
-            }
+        createTestHuman(
+            expectation,
+            email: email,
+            then: { (human) in
     
             Session.create(
                 email: email,
@@ -133,4 +144,47 @@ struct TestUtility {
         
     }
     
+    internal struct ExistingTestShop {
+        let shop: Shop
+        let session: Session
+    }
+    
+    internal static func createTestTeammember(
+        _ expectation: XCTestExpectation,
+        _ existingShop: ExistingTestShop? = nil,
+        then callback: @escaping (Teammember, Session) -> Void
+    ) {
+        
+        
+        
+        func create(_ shop: Shop, _ session: Session) {
+            Self.createTestHuman(expectation) { (human) in
+                Teammember.create(
+                    shop: shop,
+                    human: human,
+                    session: session,
+                    callback: { (error, teammember) in
+                        guard let teammember = teammember else {
+                            XCTFail(); expectation.fulfill(); return
+                        }
+                        callback(teammember, session)
+                        return
+                    }
+                )
+            }
+        }
+        
+        if let existing = existingShop {
+            create(existing.shop, existing.session)
+            return
+        }
+
+        TestUtility.createTestShop(expectation) { (shop, session) in
+            create(shop, session)
+            return
+        }
+        return
+
+    }
+
 }

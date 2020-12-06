@@ -58,7 +58,7 @@ public struct AppleHuman: Codable, PubliclyIdentified {
             data: nil,
             session: session,
             query: QueryString(targetsOnly: [
-                UrlTarget(stringValue: identityToken, key: "token")
+                UrlTarget(identityToken, key: "token")
             ]),
             method: HTTPMethod.GET,
             then: { (error: Error?, data: Data?) -> Void in

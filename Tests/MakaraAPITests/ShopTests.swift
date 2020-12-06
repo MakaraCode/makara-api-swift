@@ -94,4 +94,156 @@ final class MakaraAPI_ShopTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
         return
     }
+    
+    func testCreateTeammember() {
+        
+        let expectation = XCTestExpectation()
+        
+        func testCreation(_ human: Human, _ session: Session, _ shop: Shop) {
+            
+            Teammember.create(
+                shop: shop,
+                human: human,
+                session: session,
+                callback: { (error, teammember) in
+                    XCTAssertNil(error)
+                    XCTAssertNotNil(teammember)
+                    expectation.fulfill()
+                    return
+                }
+            )
+            
+        }
+        
+        TestUtility.createTestShop(expectation) { (shop, session) in
+            
+            TestUtility.createTestHuman(
+                expectation,
+                email: TestUtility.createTestEmail(),
+                then: { (human) in
+                    testCreation(human, session, shop)
+                    return
+                }
+            )
+            
+        }
+            
+        wait(for: [expectation], timeout: 5)
+        
+        return
+
+    }
+    
+    func testRetrieveTeammember() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestTeammember(expectation) { (member, session) in
+            
+            Teammember.retrieve(
+                withPublicId: member.publicId,
+                session: session,
+                then: { error, teammember in
+                    XCTAssertNil(error)
+                    XCTAssertNotNil(teammember)
+                    expectation.fulfill()
+                    return
+                }
+            )
+    
+            return
+
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+        
+    }
+    
+    func testUpdateTeammember() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestTeammember(expectation) { (member, session) in
+            
+            XCTAssert(member.active == true)
+            
+            member.update(
+                active: false,
+                session: session,
+                callback: { (error, teammember) in
+                    guard let teammember = teammember else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    XCTAssertNil(error)
+                    XCTAssert(teammember.active == false)
+                    expectation.fulfill()
+                    return
+                }
+            )
+            
+            return
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+    }
+    
+    func testListTeammembers() {
+        
+        let expectation = XCTestExpectation()
+        
+        func list(_ shop: Shop, _ session: Session) {
+            
+            Teammember.retrieveMany(
+                session: session,
+                shop: shop,
+                callback: { (error, members) in
+                    XCTAssertNil(error)
+                    guard let members = members else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    XCTAssert(members.count == 2)
+                    expectation.fulfill()
+                    return
+                }
+            )
+            
+        }
+        
+        TestUtility.createTestShop(expectation) { (shop, session) in
+    
+            let existing = TestUtility.ExistingTestShop(
+                shop: shop,
+                session: session
+            )
+    
+            TestUtility.createTestTeammember(
+                expectation,
+                existing,
+                then: { (t1, session) in
+                    TestUtility.createTestTeammember(
+                        expectation,
+                        existing,
+                        then: { (t2, session) in
+                            list(shop, session)
+                            return
+                        }
+                    )
+                    return
+                }
+            )
+            
+            return
+
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
 }

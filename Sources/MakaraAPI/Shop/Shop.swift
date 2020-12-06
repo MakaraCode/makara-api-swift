@@ -59,10 +59,10 @@ public struct Shop: Codable, Journaled, Located, PubliclyRetrievable {
     ) {
         
         let targets = [
-            UrlTarget(integerValue: offset, key: "offset"),
-            UrlTarget(integerValue: limit, key: "limit"),
-            UrlTarget(stringValue: order.rawValue, key: "order"),
-            UrlTarget(stringValue: orderBy.rawValue, key: "order_by")
+            UrlTarget(offset, key: "offset"),
+            UrlTarget(limit, key: "limit"),
+            UrlTarget(order.rawValue, key: "order"),
+            UrlTarget(orderBy.rawValue, key: "order_by")
         ]
         
         Request.make(

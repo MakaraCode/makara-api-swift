@@ -28,7 +28,7 @@ extension PubliclyRetrievable {
             session: session,
             query: QueryString(
                 targetsOnly: [
-                    UrlTarget(stringValue: publicId, key: "public_id")
+                    UrlTarget(publicId, key: "public_id")
                 ]
             ),
             method: HTTPMethod.GET,

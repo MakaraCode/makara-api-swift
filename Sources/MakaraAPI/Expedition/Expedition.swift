@@ -136,21 +136,18 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
     ) {
         
         var targets = [
-            UrlTarget(integerValue: offset, key: "offset"),
-            UrlTarget(integerValue: limit, key: "limit"),
-            UrlTarget(stringValue: order.rawValue, key: "order"),
-            UrlTarget(stringValue: orderBy.rawValue, key: "order_by")
+            UrlTarget(offset, key: "offset"),
+            UrlTarget(limit, key: "limit"),
+            UrlTarget(order.rawValue, key: "order"),
+            UrlTarget(orderBy.rawValue, key: "order_by")
         ]
                       
         if let publicId = publicId {
-            targets.append(UrlTarget(stringValue: publicId, key: "public_id"))
+            targets.append(UrlTarget(publicId, key: "public_id"))
         }
         
         if let shop = shop {
-            targets.append(UrlTarget(
-                stringValue: shop.publicId,
-                key: "shop_id"
-            ))
+            targets.append(UrlTarget(shop.publicId, key: "shop_id"))
         }
         
         Self.retrieveMany(
