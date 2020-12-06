@@ -10,7 +10,7 @@ import Foundation
 
 extension PointOfInterest {
     
-    static let demo = PointOfInterest(
+    public static let demo = PointOfInterest(
         journalEntry: JournalEntry(
             publicId: "demoId_proDive",
             created: Date(),
@@ -51,7 +51,7 @@ extension PointOfInterest {
         orderBy: .created
     )
     
-    static let demo2 = PointOfInterest(
+    public static let demo2 = PointOfInterest(
         journalEntry: JournalEntry(
             publicId: "demoId_diveCenterBondi",
             created: Date(),

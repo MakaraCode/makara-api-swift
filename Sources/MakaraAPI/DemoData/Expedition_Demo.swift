@@ -10,7 +10,7 @@ import Foundation
 
 extension Expedition {
     
-    static let demo = Expedition(
+    public static let demo = Expedition(
         journalEntry: JournalEntry(
             publicId: "demo_expedition_1",
             created: Date(timeIntervalSinceNow: -1000),
