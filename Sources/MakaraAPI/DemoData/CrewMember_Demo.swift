@@ -11,19 +11,33 @@ import Foundation
 extension CrewMember {
     
     public static let demoCrewMember1 = CrewMember(
-        human: Human.demoHuman3,
-        publicId: "demo_crewmember_1",
+        journalEntry: JournalEntry(
+            publicId: "demo_crewmember_1",
+            created: Date(),
+            creatingAgentId: Human.demoHuman1.publicId
+        ),
+        role: .captain,
+        teammember: Teammember.demo,
         expeditionId: Expedition.demo.publicId,
         orderBy: .name,
-        disposition: Disposition(
-            sequence: 1,
-            count: 1,
-            limit: 50,
-            offset: 0,
-            order: .ascending
-        )
+        active: true,
+        disposition: nil
     )
     
+    public static let demoCrewMember2 = CrewMember(
+        journalEntry: JournalEntry(
+            publicId: "demo_crewmember_2",
+            created: Date(),
+            creatingAgentId: Human.demoHuman1.publicId
+        ),
+        role: .crew,
+        teammember: Teammember.demo,
+        expeditionId: Expedition.demo.publicId,
+        orderBy: .name,
+        active: true,
+        disposition: nil
+    )
+
     public static let demoCrew = [CrewMember.demoCrewMember1]
 
 }

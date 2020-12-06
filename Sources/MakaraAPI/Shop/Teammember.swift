@@ -132,6 +132,8 @@ public struct Teammember: PubliclyRetrievable, Journaled, Listable {
             then: callback
         )
         
+        return
+        
     }
     
     private struct CreatePayload: Codable {

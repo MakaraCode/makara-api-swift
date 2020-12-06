@@ -11,13 +11,13 @@ import Foundation
 public struct Expedition: PubliclyRetrievable, Journaled, Listable {
     
     public static let path = "/expedition"
-    internal static let listPath = Self.path + "/list"
     
     public let journalEntry: JournalEntry
     public let checkinTime: Date
     public let checkinLocation: PointOfInterest
     public let departureTime: Date
     public let vehicle: Vehicle?
+    public let crew: Array<CrewMember>
     public let shopId: String
     public let orderBy: Expedition.OrderBy
     public let disposition: Disposition
@@ -32,6 +32,7 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
         case checkinLocation = "checkin_location"
         case departureTime = "departure_time"
         case vehicle
+        case crew
         case shopId = "shop_id"
         case orderBy = "order_by"
         case disposition

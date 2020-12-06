@@ -117,11 +117,12 @@ struct TestUtility {
     
     internal static func createTestExpedition(
         _ expectation: XCTestExpectation,
+        _ existingShop: ExistingTestShop? = nil,
         then callback: @escaping (Expedition, Session) -> Void
     ) {
         
-        Self.createTestShop(expectation) { (shop, session) in
-            
+        func create(_ shop: Shop, _ session: Session) {
+                
             Expedition.create(
                 checkinTime: Date(),
                 checkinLocation: shop,
@@ -137,7 +138,18 @@ struct TestUtility {
                     }
                     callback(expedition, session)
                     return
-            })
+                })
+        }
+    
+        if let existingShop = existingShop {
+            create(existingShop.shop, existingShop.session)
+            return
+        }
+        
+    
+        Self.createTestShop(expectation) { (shop, session) in
+            create(shop, session)
+            return
         }
         
         return
@@ -154,8 +166,6 @@ struct TestUtility {
         _ existingShop: ExistingTestShop? = nil,
         then callback: @escaping (Teammember, Session) -> Void
     ) {
-        
-        
         
         func create(_ shop: Shop, _ session: Session) {
             Self.createTestHuman(expectation) { (human) in
@@ -185,6 +195,87 @@ struct TestUtility {
         }
         return
 
+    }
+    
+    internal struct ExistingTestExpedition {
+        let expedition: Expedition
+        let session: Session
+    }
+    
+    internal struct ExistingTestTeammember {
+        let teammember: Teammember
+        let session: Session
+    }
+    
+    internal static func createTestCrewmember(
+        _ expectation: XCTestExpectation,
+        _ existingExpedition: ExistingTestExpedition? = nil,
+        _ existingTeammember: ExistingTestTeammember? = nil,
+        _ existingShop: ExistingTestShop? = nil,
+        then callback: @escaping (CrewMember, Session) -> Void
+    ) {
+        
+        func create(
+            _ expedition: Expedition,
+            _ session: Session,
+            _ teammember: Teammember
+        ) {
+            
+            CrewMember.create(
+                session: session,
+                teammember: teammember,
+                expedition: expedition,
+                role: .captain,
+                callback: { (error, crewmember) in
+                    guard let crewmember = crewmember else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    callback(crewmember, session)
+                    return
+                }
+            )
+            
+            return
+            
+        }
+        
+        func stageExpedition(_ expedition: Expedition, _ session: Session) {
+            if let existingTeammember = existingTeammember {
+                create(expedition, session, existingTeammember.teammember)
+                return
+            }
+            
+            TestUtility.createTestTeammember(
+                expectation,
+                existingShop,
+                then: { (teammember, session) in
+                    create(expedition, session, teammember)
+                    return
+                }
+            )
+            
+            return
+        }
+        
+        if let existingExpedition = existingExpedition {
+            stageExpedition(
+                existingExpedition.expedition,
+                existingExpedition.session
+            )
+            return
+        }
+        
+        TestUtility.createTestExpedition(
+            expectation,
+            existingShop,
+            then: { (expedition, session) in
+                stageExpedition(expedition, session)
+                return
+            }
+        )
+        
+        return
+        
     }
 
 }

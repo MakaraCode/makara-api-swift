@@ -10,11 +10,13 @@ import Foundation
 
 internal protocol Listable: Codable {
     
-    static var listPath: String { get }
+    static var path: String { get }
     
 }
 
 extension Listable {
+    
+    static var listPath: String { get { return Self.path + "/list" } }
     
     internal static func retrieveMany(
         targets: Array<UrlTarget>,
