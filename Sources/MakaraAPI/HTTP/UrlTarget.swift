@@ -37,6 +37,12 @@ internal struct UrlTarget {
         return
     }
     
+    init(_ value: Date, key: String) {
+        self.key = key
+        self.value = RequestData.encode(value)
+        return
+    }
+    
     internal static func createSequence(
         key: String,
         values: [String]

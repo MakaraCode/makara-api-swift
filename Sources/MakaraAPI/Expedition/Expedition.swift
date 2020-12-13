@@ -131,26 +131,30 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
         orderBy: Expedition.OrderBy = .departureTime,
         offset: Int = 0,
         limit: Int = 20,
+        maxDepartureTime: Date? = nil,
+        minDepartureTime: Date? = nil,
         byShop shop: Shop? = nil,
         publicId: String? = nil,
         then callback: @escaping (_: Error?, _: Array<Expedition>?) -> Void
     ) {
         
-        var targets = [
+        let targets = [
             UrlTarget(offset, key: "offset"),
             UrlTarget(limit, key: "limit"),
             UrlTarget(order.rawValue, key: "order"),
-            UrlTarget(orderBy.rawValue, key: "order_by")
-        ]
+            UrlTarget(orderBy.rawValue, key: "order_by"),
+            publicId != nil ? UrlTarget(publicId!, key: "public_id") : nil,
+            shop != nil ? UrlTarget(shop!.publicId, key: "shop_id") : nil,
+            maxDepartureTime != nil ? UrlTarget(
+                maxDepartureTime!,
+                key: "max_depart_time"
+            ) : nil,
+            minDepartureTime != nil ? UrlTarget(
+                minDepartureTime!,
+                key: "min_depart_time"
+            ) : nil
+        ].compactMap { $0 }
                       
-        if let publicId = publicId {
-            targets.append(UrlTarget(publicId, key: "public_id"))
-        }
-        
-        if let shop = shop {
-            targets.append(UrlTarget(shop.publicId, key: "shop_id"))
-        }
-        
         Self.retrieveMany(
             targets: targets,
             session: session,

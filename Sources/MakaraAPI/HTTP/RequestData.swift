@@ -41,5 +41,12 @@ internal struct RequestData {
         ) else { throw MakaraAPIError(.inconsistentState) }
         return queryString
     }
+    
+    internal static func encode(_ date: Date) -> String {
+        
+        Self.dateFormatter.dateFormat = RequestData.dateStringFormat
+        return Self.dateFormatter.string(from: date)
+
+    }
 
 }
