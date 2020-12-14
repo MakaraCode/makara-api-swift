@@ -8,7 +8,9 @@
 import Foundation
 
 
-public struct PointOfInterest: Codable, Journaled {
+public struct PointOfInterest: Codable, Journaled, Listable {
+    
+    static internal let path = "/point-of-interest"
     
     public let journalEntry: JournalEntry
     public let name: String
@@ -22,8 +24,13 @@ public struct PointOfInterest: Codable, Journaled {
     
     public enum PointType: Int, Codable {
         case diveSite = 1
-        case generic = 3
-        case shop = 2
+        case generic = 2
+        case shop = 3
+        
+        internal static func toUrl(_ points: Set<Self>) -> String {
+            let values = points.map { String($0.rawValue) }
+            return "{" + values.joined(separator: ",") + "}"
+        }
     }
     
     public enum OrderBy: String, Codable {
@@ -40,6 +47,43 @@ public struct PointOfInterest: Codable, Journaled {
         case pointType = "point_type"
         case disposition
         case orderBy = "order_by"
+    }
+    
+    public static func retrieveMany(
+        session: Session,
+        order: Order = .ascending,
+        orderBy: PointOfInterest.OrderBy = .created,
+        offset: Int = 0,
+        limit: Int = 20,
+        relatedTo shop: Shop? = nil,
+        publicId: String? = nil,
+        ofType pointTypes: Set<PointOfInterest.PointType>? = nil,
+        then callback: @escaping (Error?, Array<PointOfInterest>?) -> Void
+    ) {
+        
+        let targets = [
+            UrlTarget(offset, key: "offset"),
+            UrlTarget(limit, key: "limit"),
+            UrlTarget(order.rawValue, key: "order"),
+            UrlTarget(orderBy.rawValue, key: "order_by"),
+            publicId != nil ? UrlTarget(publicId!, key: "public_id") : nil,
+            shop != nil ? UrlTarget(
+                shop!.publicId,
+                key: "related_to_shop"
+            ) : nil,
+            pointTypes != nil ? UrlTarget(
+                PointType.toUrl(pointTypes!),
+                key: "of_type"
+            ) : nil
+        ].compactMap { $0 }
+        
+        Self.retrieveMany(
+            targets: targets,
+            session: session,
+            then: callback
+        )
+        
+        return
     }
 
 }
