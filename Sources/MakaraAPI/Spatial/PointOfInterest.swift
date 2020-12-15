@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct PointOfInterest: Codable, Journaled, Listable {
+public struct PointOfInterest: Codable, Journaled, Listable, Located {
     
     static internal let path = "/point-of-interest"
     
@@ -21,6 +21,8 @@ public struct PointOfInterest: Codable, Journaled, Listable {
     public let pointType: PointOfInterest.PointType
     public let disposition: Disposition
     public let orderBy: PointOfInterest.OrderBy
+    
+    public var pointOfInterest: PointOfInterest { get { return self } }
     
     public enum PointType: Int, Codable {
         case diveSite = 1
