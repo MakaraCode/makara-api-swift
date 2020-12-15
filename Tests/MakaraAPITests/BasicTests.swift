@@ -31,7 +31,7 @@ final class MakaraAPI_BasicTests: XCTestCase {
     
     func testRetrieveNilHuman() {
         
-        let expectation = XCTestExpectation()
+        let expectation = XCTestExpectation() 
         
         TestUtility.createTestSession(expectation) { human, session in
             
