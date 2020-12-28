@@ -277,5 +277,41 @@ struct TestUtility {
         return
         
     }
+    
+    internal static func createTestLeg(
+        _ expectation: XCTestExpectation,
+        _ existingExpedition: ExistingTestExpedition? = nil,
+        then callback: @escaping (Leg, Session) -> Void
+    ) {
+        
+        Self.createTestExpedition(expectation) { (expedition, session) in
+            
+            Leg.create(
+                session: session,
+                expedition: expedition,
+                sequence: 1
+            ) { (error, leg) in
+
+                guard let leg = leg else {
+                    expectation.fulfill()
+                    XCTFail()
+                    return
+                }
+
+                guard error == nil else {
+                    expectation.fulfill()
+                    XCTFail()
+                    return
+                }
+                callback(leg, session)
+                
+                return
+            }
+
+        }
+        
+        return
+        
+    }
 
 }

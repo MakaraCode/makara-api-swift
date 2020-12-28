@@ -292,4 +292,119 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
         return
 
     }
+    
+    func testCreateLeg() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestExpedition(
+            expectation
+        ) { (expedition, session) in
+            
+            Leg.create(
+                session: session,
+                expedition: expedition,
+                sequence: 1
+            ) { (error, leg) in
+                XCTAssertNil(error)
+                XCTAssertNotNil(leg)
+                expectation.fulfill()
+                return
+            }
+            
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
+    
+    func testUpdateLeg() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestLeg(expectation) { (leg, session) in
+            leg.update(
+                session: session,
+                sequence: 1,
+                active: false,
+                then: { (error, leg) in
+                    guard error == nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    guard leg != nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    expectation.fulfill()
+                    return
+                }
+            )
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
+    
+    func testRetrieveManyLegs() {
+        
+        let expectation = XCTestExpectation()
+        
+        func receiveExpedition(
+            session: Session,
+            error: Error?,
+            expedition: Expedition?
+        ) {
+            
+            guard let expedition = expedition else {
+                expectation.fulfill(); XCTFail(); return
+            }
+            
+            Leg.retrieveMany(
+                session: session,
+                expedition: expedition
+            ) { (error, legs) in
+                
+                guard let legs = legs else {
+                    expectation.fulfill(); XCTFail(); return
+                }
+                
+                guard legs.count > 0 else {
+                    expectation.fulfill(); XCTFail(); return
+                }
+                
+                expectation.fulfill()
+                return
+    
+            }
+            
+            return
+            
+        }
+        
+        
+        TestUtility.createTestLeg(expectation) { (leg, session) in
+            
+            Expedition.retrieve(
+                withPublicId: leg.expeditionId,
+                session: session) { (error, expedition) in
+                
+                receiveExpedition(
+                    session: session,
+                    error: error,
+                    expedition: expedition
+                )
+                
+                return
+
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
 }

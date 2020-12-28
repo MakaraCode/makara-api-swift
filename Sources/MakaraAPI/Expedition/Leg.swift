@@ -12,7 +12,6 @@ public struct Leg: PubliclyRetrievable, Journaled, Listable {
  
     public static var path: String { get { return Expedition.path + "/leg" } }
     
-    public let publicId: String
     public let expeditionId: String
     public let active: Bool
     public let disposition: Disposition?
@@ -23,11 +22,10 @@ public struct Leg: PubliclyRetrievable, Journaled, Listable {
     }
     
     internal enum CodingKeys: String, CodingKey {
-        case publicId = "public_id"
         case expeditionId = "expedition_id"
         case active
         case disposition
-        case journalEntry = "journal_entry"
+        case journalEntry = "journal"
     }
     
     public func update(

@@ -19,7 +19,7 @@ public struct PointOfInterest: Codable, Journaled, Listable, Located {
     public let coverImage: Image?
     public let referenceFrame: SpatialReferenceFrame?
     public let pointType: PointOfInterest.PointType
-    public let disposition: Disposition
+    public let disposition: Disposition?
     public let orderBy: PointOfInterest.OrderBy
     
     public var pointOfInterest: PointOfInterest { get { return self } }
