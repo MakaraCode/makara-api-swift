@@ -407,4 +407,94 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
         return
         
     }
+    
+    func testCreateParticipant() {
+        
+        let expectation = XCTestExpectation()
+        
+        TestUtility.createTestLeg(expectation) { (leg, session) in
+            
+            TestUtility.createTestHuman(expectation) { (human) in
+
+                Participant.create(
+                    session: session,
+                    leg: leg,
+                    human: human,
+                    activities: [.dive]) { (error, participant) in
+                    
+                    guard error == nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    
+                    guard participant != nil else {
+                        XCTFail(); expectation.fulfill(); return
+                    }
+                    
+                    expectation.fulfill()
+                    return
+                    
+                }
+                
+                return
+                
+            }
+            
+            return
+
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+        
+    }
+    
+    func testRetrieveManyParticipants() {
+        
+        let expectation = XCTestExpectation()
+        
+        func tryRetrieval(_ leg: Leg, _ session: Session) {
+            Participant.retrieveMany(
+                session: session,
+                leg: leg
+            ) { (error, participants) in
+                XCTAssertNil(error)
+                guard let participants = participants else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                guard participants.count > 1 else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                expectation.fulfill()
+                return
+            }
+        }
+        
+        TestUtility.createTestLeg(expectation) { (leg, session) in
+            
+            let existing = TestUtility.ExistingLeg(session: session, leg: leg)
+            
+            TestUtility.createTestHuman(expectation) { (human1) in
+                TestUtility.createTestHuman(expectation) { (human2) in
+                    TestUtility.createTestParticipant(
+                        expectation,
+                        existingLeg: existing,
+                        human: human1
+                    ) { (participant, session) in
+                        TestUtility.createTestParticipant(
+                            expectation,
+                            existingLeg: existing,
+                            human: human2
+                        ) { (participant2, session) in
+                            tryRetrieval(leg, session)
+                        }
+                    }
+                }
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+    }
+
 }

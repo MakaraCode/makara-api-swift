@@ -280,7 +280,6 @@ struct TestUtility {
     
     internal static func createTestLeg(
         _ expectation: XCTestExpectation,
-        _ existingExpedition: ExistingTestExpedition? = nil,
         then callback: @escaping (Leg, Session) -> Void
     ) {
         
@@ -312,6 +311,79 @@ struct TestUtility {
         
         return
         
+    }
+    
+    internal struct ExistingLeg {
+        let session: Session
+        let leg: Leg
+    }
+    
+    internal static func createTestParticipant(
+        _ expectation: XCTestExpectation,
+        expedition: Expedition? = nil,
+        existingLeg: ExistingLeg? = nil,
+        human: Human? = nil,
+        then callback: @escaping (Participant, Session) -> Void
+    ) {
+        
+        func stageHuman(
+            _ leg: Leg,
+            _ human: Human,
+            _ session: Session
+        ) {
+            
+            Participant.create(
+                session: session,
+                leg: leg,
+                human: human,
+                activities: [.dive]
+            ) { (error, participant) in
+                
+                guard let participant = participant else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                
+                callback(participant, session)
+                
+                return
+                
+            }
+            
+            return
+            
+        }
+        
+        func stageLeg(
+            _ leg: Leg,
+            _ session: Session
+        ) {
+            if let human = human {
+                stageHuman(leg, human, session)
+                return
+            }
+            
+            TestUtility.createTestHuman(expectation) { (human) in
+                stageHuman(leg, human, session)
+                return
+            }
+            
+            return
+        }
+    
+        if let existing = existingLeg {
+            stageLeg(
+                existing.leg,
+                existing.session
+            )
+            return
+        }
+        
+        Self.createTestLeg(expectation) { (leg, session) in
+           stageLeg(leg, session)
+        }
+        
+        return
+
     }
 
 }

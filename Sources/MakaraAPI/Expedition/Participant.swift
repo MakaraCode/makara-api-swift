@@ -18,6 +18,14 @@ public struct Participant: Codable, Listable {
     public let active: Bool
     public let disposition: Disposition?
     
+    internal enum CodingKeys: String, CodingKey {
+        case legId = "leg_id"
+        case human
+        case activities
+        case active
+        case disposition
+    }
+    
     public func update(
         session: Session,
         activities: Array<Activity>,
