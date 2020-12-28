@@ -8,10 +8,10 @@
 import Foundation
 
 
-public enum Activity: String, Codable {
+public enum Activity: Int, Codable {
     
-    case dive = "dive"
-    case snorkel = "snorkel"
-    case swim = "swim"
+    case dive = 1
+    case snorkel = 2
+    case swim = 3
 
 }

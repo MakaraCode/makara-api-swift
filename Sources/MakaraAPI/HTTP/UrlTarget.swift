@@ -43,19 +43,25 @@ internal struct UrlTarget {
         return
     }
     
+    init<T: PubliclyIdentified>(_ value: T, key: String) {
+        self.key = key
+        self.value = value.publicId
+        return
+    }
+    
     internal static func createSequence(
         key: String,
         values: [String]
     ) -> [UrlTarget] {
-        let targets = values.map {UrlTarget($0, key: key)}
+        let targets = values.map { UrlTarget($0, key: key) }
         return targets
     }
     
     internal static func createSequence(
         key: String,
         values: [Int]
-        ) -> [UrlTarget] {
-        let targets = values.map {UrlTarget($0, key: key)}
+    ) -> [UrlTarget] {
+        let targets = values.map { UrlTarget($0, key: key) }
         return targets
     }
 
