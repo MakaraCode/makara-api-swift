@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct Passenger: Codable, Listable {
+public struct Passenger: Codable, Listable, Identifiable, Hashable {
     
     public static let path = Expedition.path + "/passenger"
     
@@ -17,6 +17,17 @@ public struct Passenger: Codable, Listable {
     public let activities: Array<Activity>
     public let disposition: Disposition?
     public let orderBy: Self.OrderBy
+    
+    public var id: String { get { return self.expeditionId + human.publicId } }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        if (lhs.id == rhs.id) { return true }
+        return false
+    }
     
     internal enum CodingKeys: String, CodingKey {
         case expeditionId = "expedition_id"
