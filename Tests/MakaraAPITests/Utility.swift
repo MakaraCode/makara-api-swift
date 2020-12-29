@@ -214,13 +214,13 @@ struct TestUtility {
         _ existingShop: ExistingTestShop? = nil,
         then callback: @escaping (CrewMember, Session) -> Void
     ) {
-        
+
         func create(
             _ expedition: Expedition,
             _ session: Session,
             _ teammember: Teammember
         ) {
-            
+
             CrewMember.create(
                 session: session,
                 teammember: teammember,
@@ -234,11 +234,11 @@ struct TestUtility {
                     return
                 }
             )
-            
+
             return
-            
+
         }
-        
+
         func stageExpedition(_ expedition: Expedition, _ session: Session) {
             if let existingTeammember = existingTeammember {
                 create(expedition, session, existingTeammember.teammember)
@@ -284,7 +284,7 @@ struct TestUtility {
     ) {
         
         Self.createTestExpedition(expectation) { (expedition, session) in
-            
+
             Leg.create(
                 session: session,
                 expedition: expedition,
@@ -303,14 +303,14 @@ struct TestUtility {
                     return
                 }
                 callback(leg, session)
-                
+
                 return
             }
 
         }
         
         return
-        
+
     }
     
     internal struct ExistingLeg {
@@ -342,7 +342,7 @@ struct TestUtility {
                 guard let participant = participant else {
                     XCTFail(); expectation.fulfill(); return
                 }
-                
+
                 callback(participant, session)
                 
                 return

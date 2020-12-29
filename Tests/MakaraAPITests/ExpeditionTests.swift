@@ -495,6 +495,82 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
         
+        return
+
     }
 
+    func testRetrieveManyPassengers() {
+        
+        let expectation = XCTestExpectation()
+        
+        func receiveExpedition(
+            session: Session,
+            error: Error?,
+            expedition: Expedition?
+        ) {
+            
+            guard let expedition = expedition else {
+                XCTFail(); expectation.fulfill(); return;
+            }
+
+            Passenger.retrieveMany(
+                session: session,
+                expedition: expedition
+            ) { (error, passengers) in
+
+                guard let passengers = passengers else {
+                    XCTFail(); expectation.fulfill(); return;
+                }
+
+                guard passengers.count > 1 else {
+                    XCTFail(); expectation.fulfill(); return;
+                }
+
+                expectation.fulfill();
+                return;
+
+            }
+
+        }
+
+        TestUtility.createTestLeg(expectation) { (leg, session) in
+            
+            let existing = TestUtility.ExistingLeg(session: session, leg: leg)
+            
+            TestUtility.createTestParticipant(
+                expectation,
+                existingLeg: existing
+            ) {
+                (participant1, session) in
+                TestUtility.createTestParticipant(
+                    expectation,
+                    existingLeg: existing
+                ) {
+                    (participant2, session) in
+                    
+                    Expedition.retrieve(
+                        withPublicId: existing.leg.expeditionId,
+                        session: existing.session
+                    ) { (error, expedition) in
+                        
+                        receiveExpedition(
+                            session: existing.session,
+                            error: error,
+                            expedition: expedition
+                        )
+                        
+                        return
+                        
+                    }
+                }
+            }
+            
+        }
+        
+        wait(for: [expectation], timeout: 5)
+        
+        return
+
+    }
+    
 }
