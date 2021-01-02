@@ -8,8 +8,7 @@
 import Foundation
 
 
-
-public struct Human: Codable, PubliclyRetrievable {
+public struct Human: Codable, PubliclyRetrievable, Listable {
     
     public static let path = "/human"
     
@@ -53,10 +52,40 @@ public struct Human: Codable, PubliclyRetrievable {
 
     }
     
+    public static func retrieveMany(
+        session: Session,
+        order: Order = .ascending,
+        orderBy: Human.OrderBy = .name,
+        offset: Int = 0,
+        limit: Int = 20,
+        accessibleTo shop: Shop? = nil,
+        nameFragment name: String? = nil,
+        then callback: @escaping (Error?, Array<Human>?) -> Void
+    ) {
+        
+        let targets = [
+            UrlTarget(offset, key: "offset"),
+            UrlTarget(limit, key: "limit"),
+            UrlTarget(order.rawValue, key: "order"),
+            UrlTarget(orderBy.rawValue, key: "order_by"),
+            shop != nil ? UrlTarget(shop!, key: "shop_id") : nil,
+            name != nil ? UrlTarget(name!, key: "name_fragment") : nil
+        ].compactMap { $0 }
+        
+        Self.retrieveMany(targets: targets, session: session, then: callback)
+        
+        return
+
+    }
+
+    public enum OrderBy: String, CodingKey {
+        case name = "name"
+    }
+
     fileprivate struct CreatePayload: Codable {
         let email: String
         let name: HumanName
         let secret: String
     }
-
+    
 }

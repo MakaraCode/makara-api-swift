@@ -254,7 +254,7 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
         return
 
     }
-    
+
     func testUpdateCrewmember() {
         
         let expectation = XCTestExpectation()
@@ -277,7 +277,7 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
                     return
                 }
             )
-            
+
             return
 
         }
@@ -414,7 +414,7 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
         
         TestUtility.createTestLeg(expectation) { (leg, session) in
             
-            TestUtility.createTestHuman(expectation) { (human) in
+            TestUtility.createTestHuman(expectation) { (human, _) in
 
                 Participant.create(
                     session: session,
@@ -474,8 +474,8 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
             
             let existing = TestUtility.ExistingLeg(session: session, leg: leg)
             
-            TestUtility.createTestHuman(expectation) { (human1) in
-                TestUtility.createTestHuman(expectation) { (human2) in
+            TestUtility.createTestHuman(expectation) { (human1, _) in
+                TestUtility.createTestHuman(expectation) { (human2, _) in
                     TestUtility.createTestParticipant(
                         expectation,
                         existingLeg: existing,

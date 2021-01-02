@@ -135,7 +135,7 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
         minDepartureTime: Date? = nil,
         byShop shop: Shop? = nil,
         publicId: String? = nil,
-        then callback: @escaping (_: Error?, _: Array<Expedition>?) -> Void
+        then callback: @escaping (Error?, Array<Expedition>?) -> Void
     ) {
         
         let targets = [

@@ -120,7 +120,7 @@ final class MakaraAPI_ShopTests: XCTestCase {
             TestUtility.createTestHuman(
                 expectation,
                 email: TestUtility.createTestEmail(),
-                then: { (human) in
+                then: { (human, _) in
                     testCreation(human, session, shop)
                     return
                 }
@@ -245,5 +245,52 @@ final class MakaraAPI_ShopTests: XCTestCase {
         
         return
         
+    }
+    
+    func testListAccessibleHumans() {
+        
+        let expectation = XCTestExpectation()
+        
+        func retrieveHumans(session: Session, shop: Shop) {
+            Human.retrieveMany(
+                session: session,
+                accessibleTo: shop
+            ) { (error, humans) in
+                
+                XCTAssertNil(error)
+                
+                guard let humans = humans else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                
+                guard humans.count == 3 else {
+                    XCTFail(); expectation.fulfill(); return
+                }
+                
+                expectation.fulfill()
+                
+                return
+                
+            }
+        }
+        
+        TestUtility.createTestHuman(expectation) { (owner, session) in
+            TestUtility.createTestShop(expectation, session) { (shop1, _) in
+                TestUtility.createTestHuman(expectation, session) {
+                    (human1, _) in
+                    TestUtility.createTestHuman(expectation, session) {
+                        (human2, _) in
+                        retrieveHumans(session: session, shop: shop1)
+                        return
+                    }
+                    return
+                }
+                return
+            }
+        }
+        
+        self.wait(for: [expectation], timeout: 5)
+        
+        return
     }
 }
