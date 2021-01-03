@@ -108,10 +108,23 @@ final class MakaraAPI_BasicTests: XCTestCase {
         return
         
     }
+    
+    func testPassengerArrayEquality() {
+        
+        let invalidRhs = [Passenger.demoPassenger1]
+        let invalidLhs = [Passenger.demoPassenger2]
+        
+        if invalidLhs == invalidRhs { XCTFail(); return }
+        if invalidRhs != invalidRhs { XCTFail(); return }
+        if invalidLhs != invalidLhs { XCTFail(); return }
+        
+        let validRhs = [Passenger.demoPassenger1, Passenger.demoPassenger2]
+        let validLhs = validRhs
+        
+        if validRhs != validLhs { XCTFail() }
+        
+        return
 
-
-    static var allTests = [
-        ("testCreateHuman", testCreateHuman),
-    ]
+    }
 }
 
