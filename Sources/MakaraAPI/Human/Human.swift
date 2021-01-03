@@ -27,7 +27,7 @@ public struct Human: Codable, PubliclyRetrievable, Listable {
     public static func create(
         name: HumanName,
         email: String,
-        secret: String,
+        secret: String?,
         session: Session?,
         then callback: @escaping (Error?, Human?) -> Void
     ) {
@@ -85,7 +85,7 @@ public struct Human: Codable, PubliclyRetrievable, Listable {
     fileprivate struct CreatePayload: Codable {
         let email: String
         let name: HumanName
-        let secret: String
+        let secret: String?
     }
-    
+
 }
