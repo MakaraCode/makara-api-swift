@@ -91,6 +91,25 @@ final class MakaraAPI_BasicTests: XCTestCase {
         
     }
 
+
+    func testValidateEmail() {
+        
+        let invalid = "borked@"
+        let valid = "someone@something.com"
+        
+        if EmailAddress.appearsValid(invalid) == true {
+            XCTFail(); return
+        }
+        
+        if EmailAddress.appearsValid(valid) == false {
+            XCTFail(); return
+        }
+        
+        return
+        
+    }
+
+
     static var allTests = [
         ("testCreateHuman", testCreateHuman),
     ]
