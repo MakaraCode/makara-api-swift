@@ -39,10 +39,10 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
     }
     
     public func update(
+        session: Session,
         checkinTime: Date,
         checkinLocation: PointOfInterest,
         departureTime: Date,
-        session: Session,
         vehicle: Vehicle? = nil,
         then callback: @escaping (_: Error?, _: Expedition?) -> Void
     ) {
@@ -55,6 +55,31 @@ public struct Expedition: PubliclyRetrievable, Journaled, Listable {
             shopId: self.shopId,
             session: session,
             vehicle: vehicle,
+            method: .PUT,
+            then: callback
+        )
+        
+        return
+        
+    }
+    
+    public func update(
+        session: Session,
+        checkinTime: Date? = nil,
+        checkinLocation: PointOfInterest? = nil,
+        departureTime: Date? = nil,
+        vehicle: Vehicle? = nil,
+        then callback: @escaping (Error?, Expedition?) -> Void
+    ) {
+        
+        Self.create(
+            publicId: self.publicId,
+            checkinTime: checkinTime ?? self.checkinTime,
+            checkinLocation: checkinLocation ?? self.checkinLocation,
+            departureTime: departureTime ?? self.departureTime,
+            shopId: self.shopId,
+            session: session,
+            vehicle: vehicle ?? self.vehicle,
             method: .PUT,
             then: callback
         )

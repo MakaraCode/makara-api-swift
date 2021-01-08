@@ -77,10 +77,10 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
             ) else { fatalError("date arithmetic fail")}
             
             created.update(
+                session: session,
                 checkinTime: created.checkinTime,
                 checkinLocation: created.checkinLocation,
                 departureTime: newDepartureTime,
-                session: session,
                 then: { (error, expedition) in
                     guard let expedition = expedition else {
                         XCTFail(); expectation.fulfill(); return
