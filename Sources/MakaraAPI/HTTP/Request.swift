@@ -154,7 +154,6 @@ internal class Request {
             throw MakaraAPIError(.inconsistentState, message: "nil targetURL")
         }
 
-
         var request = URLRequest(url: targetURL)
         request.httpMethod = method.rawValue
         request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData

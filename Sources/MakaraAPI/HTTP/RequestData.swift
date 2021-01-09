@@ -10,22 +10,20 @@ import Foundation
 
 internal struct RequestData {
     
-    internal static let dateStringFormat = "yyyy-MM-dd_HH:mm:ss.SSSSSS"
-    
     internal let encodedData: Data
     internal let rawData: Encodable
     internal let encodedDataString: String
-    
-    private static let dateFormatter = DateFormatter()
-    private static let encoder = JSONEncoder()
+
+    private static let encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .formatted(.nozomiTime)
+        return encoder
+    }()
     
     internal init <T: Encodable>(
         data: T
     ) throws {
         rawData = data
-        Self.dateFormatter.dateFormat = RequestData.dateStringFormat
-        Self.dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        Self.encoder.dateEncodingStrategy = .formatted(Self.dateFormatter)
         encodedData = try Self.encoder.encode(data)
         let dataString = String(data: encodedData, encoding: .utf8)
         guard dataString != nil else {
@@ -43,9 +41,7 @@ internal struct RequestData {
     }
     
     internal static func encode(_ date: Date) -> String {
-        
-        Self.dateFormatter.dateFormat = RequestData.dateStringFormat
-        return Self.dateFormatter.string(from: date)
+        return DateFormatter.nozomiTime.string(from: date)
 
     }
 

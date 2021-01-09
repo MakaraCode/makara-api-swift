@@ -139,7 +139,7 @@ final class MakaraAPI_ExpeditionTests: XCTestCase {
                 )
             }
         }
-        
+
         wait(for: [expectation], timeout: 5)
         return
     }
