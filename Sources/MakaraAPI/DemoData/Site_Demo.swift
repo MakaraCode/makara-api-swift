@@ -18,7 +18,6 @@ extension DiveSite {
         ),
         pointOfInterest: PointOfInterest.demo,
         description: nil,
-        shopProfile: nil,
         tags: [Tag(body: "Blue", count: 4)],
         disposition: Disposition(
             sequence: 1,

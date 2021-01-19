@@ -49,6 +49,21 @@ internal struct UrlTarget {
         return
     }
     
+    init(_ loc: Location, key: String) {
+        self.key = key
+        let lat = String(loc.coordinates.latitude)
+        let long = String(loc.coordinates.longitude)
+        let alt = String(loc.altitude)
+        self.value = lat + ";" + long + ";" + alt
+        return
+    }
+    
+    init(_ order: Order) {
+        self.key = "order"
+        self.value = order.rawValue
+        return
+    }
+    
     internal static func createSequence(
         key: String,
         values: [String]

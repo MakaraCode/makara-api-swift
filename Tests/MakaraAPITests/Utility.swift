@@ -350,7 +350,7 @@ struct TestUtility {
         human: Human? = nil,
         then callback: @escaping (Participant, Session) -> Void
     ) {
-        
+
         func stageHuman(
             _ leg: Leg,
             _ human: Human,
