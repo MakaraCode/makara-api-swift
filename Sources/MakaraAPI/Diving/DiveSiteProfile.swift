@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct DiveSiteProfile: Listable {
+public struct DiveSiteProfile: Listable {
     
     internal static let path = DiveSite.path + "/profile"
     
