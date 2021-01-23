@@ -15,6 +15,7 @@ public struct Leg: PubliclyRetrievable, Journaled, Listable {
     public let expeditionId: String
     public let active: Bool
     public let disposition: Disposition?
+    public let location: PointOfInterest?
     public let journalEntry: JournalEntry
     
     public enum OrderBy: String, Codable {
@@ -25,6 +26,7 @@ public struct Leg: PubliclyRetrievable, Journaled, Listable {
         case expeditionId = "expedition_id"
         case active
         case disposition
+        case location
         case journalEntry = "journal"
     }
     
