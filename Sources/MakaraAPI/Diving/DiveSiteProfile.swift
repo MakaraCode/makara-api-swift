@@ -126,6 +126,7 @@ public struct DiveSiteProfile: Listable {
         session: Session,
         shop: Shop? = nil,
         site: DiveSite? = nil,
+        expedition: Expedition? = nil,
         name: String? = nil,
         order: Order = .ascending,
         orderBy: OrderBy = .name,
@@ -138,6 +139,10 @@ public struct DiveSiteProfile: Listable {
             shop != nil ? UrlTarget(shop!, key: "shop_id") : nil,
             site != nil ? UrlTarget(site!, key: "site_id") : nil,
             name != nil ? UrlTarget(name!, key: "name_fragment") : nil,
+            expedition != nil ? UrlTarget(
+                expedition!.publicId,
+                key: "expedition_id"
+            ) : nil,
             UrlTarget(order.rawValue, key: "order"),
             UrlTarget(orderBy.rawValue, key: "order_by"),
             UrlTarget(limit, key: "limit"),
